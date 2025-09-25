@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Raka Pratama — System Analyst Portfolio</title>
+    <meta
+      name="description"
+      content="Portofolio satu halaman Raka Pratama, System Analyst yang mengubah kebutuhan bisnis menjadi spesifikasi teknis yang jelas, terukur, dan dapat diuji."
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Raka Pratama — System Analyst Portfolio"
+    />
+    <meta
+      property="og:description"
+      content="System Analyst yang menyatukan kebutuhan bisnis & solusi teknis."
+    />
+    <meta property="og:type" content="website" />
+
+    <!-- Favicon (data URI placeholder) -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' rx='24' ry='24' fill='%2393c5fd'/%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-size='64' fill='%231e3a8a' font-family='ui-sans-serif,system-ui,-apple-system' %3ER%3C/text%3E%3C/svg%3E"
+    />
+
+    <!-- Font: Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind (CDN) + extend font -->
+    <script>
+      window.tailwind = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: [
+                '"Manrope"',
+                "ui-sans-serif",
+                "system-ui",
+                "-apple-system",
+                "Segoe UI",
+                "Roboto",
+                "Ubuntu",
+                "Cantarell",
+                "Noto Sans",
+                "Helvetica Neue",
+                "Arial",
+              ],
+            },
+            letterSpacing: { "tighter-2": "-.03em" },
+          },
+        },
+      };
+    </script>
+
+    <!-- Theme bootstrap: set "dark" sedini mungkin (anti-FOUC) -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var prefersDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var theme = saved || (prefersDark ? "dark" : "light");
+          if (theme === "dark") document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          /* no-op */
+        }
+      })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body
+    class="min-h-screen font-sans text-slate-800 antialiased bg-pastel leading-relaxed body-grain bg-grid"
+  >
+    <!-- Background lembut (radial aksen tipis) -->
+    <div
+      aria-hidden="true"
+      class="bg-radial pastel-overlay fixed inset-0 -z-10"
+    ></div>
+
+    <a href="#content" class="skip-link">Lewati ke konten utama</a>
+
+    <!-- ====================== NAVBAR ====================== -->
+    <header id="appHeader" class="px-4 sm:px-6 lg:px-8">
+      <div class="glass-nav mx-auto max-w-7xl">
+        <nav
+          class="h-14 sm:h-16 px-3 sm:px-4 flex items-center justify-between gap-4"
+          aria-label="Navigasi utama"
+        >
+          <!-- Brand -->
+          <a
+            href="#hero"
+            class="group flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-xl"
+          >
+            <span
+              class="logo-shape inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/90 text-slate-900 text-sm font-extrabold ring-1 ring-white/70 tracking-tighter-2"
+              >RP</span
+            >
+            <span class="sr-only">Ke bagian atas</span>
+            <div class="hidden sm:block">
+              <p class="brand-title text-slate-900 font-semibold leading-tight">
+                Raka Pratama
+              </p>
+              <p class="text-slate-600 text-xs">System Analyst</p>
+            </div>
+          </a>
+
+          <div class="flex-1"></div>
+
+          <!-- Links kanan + CTA -->
+          <div class="hidden md:flex items-center nav-right">
+            <ul class="nav-links">
+              <li><a class="nav-link" href="#tentang">Tentang</a></li>
+              <li><a class="nav-link" href="#proyek">Proyek</a></li>
+              <li><a class="nav-link" href="#kontak">Kontak</a></li>
+            </ul>
+            <a
+              href="./assets/cv.pdf"
+              id="downloadCv"
+              class="btn-cta ml-gap"
+              title="Download CV PDF"
+              >Download CV</a
+            >
+
+            <!-- Theme Toggle (desktop) -->
+            <button
+              id="themeToggle"
+              class="theme-toggle ml-gap"
+              aria-label="Toggle dark mode"
+              aria-pressed="false"
+              title="Toggle Dark Mode"
+            >
+              <!-- Ikon sun -->
+              <svg
+                class="icon-sun"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M5 19l1.5-1.5"
+                ></path>
+              </svg>
+              <!-- Ikon moon -->
+              <svg
+                class="icon-moon"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"></path>
+              </svg>
+              <span class="sr-only">Ubah tema</span>
+            </button>
+          </div>
+
+          <!-- Hamburger (mobile) -->
+          <button
+            id="btnMenu"
+            aria-label="Buka navigasi"
+            aria-expanded="false"
+            class="btn-burger md:hidden"
+          >
+            <svg
+              class="w-5 h-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </nav>
+
+        <!-- Mobile drawer -->
+        <div
+          id="mobileNav"
+          class="md:hidden max-h-0 overflow-hidden transition-[max-height] duration-300 border-t border-white/50 bg-white/30 rounded-b-2xl backdrop-blur-2xl"
+        >
+          <div class="px-4 pb-4">
+            <ul class="grid grid-cols-2 gap-3 text-slate-800 pt-3">
+              <li><a class="nav-link block" href="#tentang">Tentang</a></li>
+              <li><a class="nav-link block" href="#keahlian">Keahlian</a></li>
+              <li><a class="nav-link block" href="#proyek">Proyek</a></li>
+              <li>
+                <a class="nav-link block" href="#pengalaman">Pengalaman</a>
+              </li>
+              <li><a class="nav-link block" href="#proses">Proses</a></li>
+              <li><a class="nav-link block" href="#alat">Alat</a></li>
+              <li><a class="nav-link block" href="#testimoni">Testimoni</a></li>
+              <li><a class="nav-link block" href="#kontak">Kontak</a></li>
+            </ul>
+            <a
+              href="./assets/cv.pdf"
+              id="downloadCvMobile"
+              class="btn-cta mt-3 w-full inline-flex sm:hidden"
+              >Download CV</a
+            >
+
+            <!-- Theme Toggle (mobile) -->
+            <button
+              id="themeToggleMobile"
+              class="theme-toggle w-full mt-3"
+              aria-label="Toggle dark mode"
+              aria-pressed="false"
+              title="Toggle Dark Mode"
+            >
+              <svg
+                class="icon-sun"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M5 19l1.5-1.5"
+                ></path>
+              </svg>
+              <svg
+                class="icon-moon"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                aria-hidden="true"
+              >
+                <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"></path>
+              </svg>
+              <span class="sr-only">Ubah tema</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="content" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- ====================== HERO ====================== -->
+      <section id="hero" class="section pt-12 sm:pt-16 lg:pt-20">
+        <div class="grid lg:grid-cols-2 gap-8 xl:gap-12 items-start">
+          <div class="text-left reveal">
+            <h1 class="hero-title text-slate-900">
+              System Analyst yang Mengubah Kebutuhan Bisnis Menjadi Solusi
+              Teknis Terukur
+            </h1>
+            <p class="mt-4 text-slate-800 justify">
+              Menerjemahkan requirement menjadi spesifikasi implementasi yang
+              jelas, terukur, dan dapat diuji.
+            </p>
+
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <a href="#proyek" class="btn-primary inline-flex items-center">
+                <svg
+                  class="w-4 h-4 -ml-0.5 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M5 12h14M13 5l7 7-7 7"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Lihat Proyek
+              </a>
+              <a href="#kontak" class="btn-ghost inline-flex items-center">
+                <svg
+                  class="w-4 h-4 -ml-0.5 mr-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect
+                    x="4"
+                    y="4"
+                    width="16"
+                    height="16"
+                    rx="2"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M4 8l8 6 8-6"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Hubungi Saya
+              </a>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <span class="chip">10+ Tahun Pengalaman</span>
+              <span class="chip">Perbankan • Fintech • Telekom</span>
+              <span class="chip">Agile • Scrum</span>
+            </div>
+          </div>
+
+          <!-- Avatar Card (clear acrylic + halo) -->
+          <div
+            class="glass-clear-xl with-halo p-7 sm:p-8 rounded-2xl shadow-xl ring-hover-white reveal"
+          >
+            <div class="flex items-center gap-8">
+              <div
+                class="w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-3xl overflow-hidden ring-1 ring-white/55 bg-white/20 flex items-center justify-center shadow"
+              >
+                <svg
+                  viewBox="0 0 200 200"
+                  class="w-full h-full"
+                  role="img"
+                  aria-label="Avatar placeholder"
+                >
+                  <rect width="200" height="200" rx="24" fill="#F8FAFC" />
+                  <circle
+                    cx="100"
+                    cy="72"
+                    r="34"
+                    fill="#FFFFFF"
+                    opacity="0.96"
+                  />
+                  <rect
+                    x="44"
+                    y="118"
+                    width="112"
+                    height="56"
+                    rx="26"
+                    fill="#FFFFFF"
+                    opacity="0.96"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-slate-900 text-2xl font-extrabold">
+                  Raka Pratama
+                </h2>
+                <p class="text-slate-700 text-sm">
+                  System Analyst • Jakarta, ID
+                </p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <a href="mailto:danijuhaenimo@gmail.com" class="btn-chip"
+                    >Email</a
+                  >
+                  <a
+                    href="https://linkedin.com/in/rakapratama"
+                    target="_blank"
+                    rel="noopener"
+                    class="btn-chip"
+                    >LinkedIn</a
+                  >
+                  <a
+                    href="https://github.com/rakapratama"
+                    target="_blank"
+                    rel="noopener"
+                    class="btn-chip"
+                    >GitHub</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="white-divider mt-10"></div>
+      </section>
+
+      <!-- ====================== TENTANG ====================== -->
+      <section id="tentang" class="section" aria-labelledby="tentang-title">
+        <h2 id="tentang-title" class="section-title">Tentang</h2>
+        <div class="glass with-halo p-7 rounded-2xl ring-hover-white reveal">
+          <p class="text-slate-800 justify">
+            System Analis berfokus pada
+            <strong>elicitation requirement</strong>, dokumentasi spesifikasi,
+            dan pemetaan proses (UML/BPMN). Terbiasa menjadi
+            <em>bridge</em> antara stakeholder bisnis dan tim pengembang,
+            memastikan solusi memenuhi tujuan bisnis, terukur, dan siap diuji.
+          </p>
+          <ul
+            class="mt-5 grid sm:grid-cols-2 gap-2 text-slate-800 list-disc pl-6"
+          >
+            <li class="justify">
+              Requirement elicitation & pemetaan proses (BPMN/UML).
+            </li>
+            <li class="justify">
+              Spesifikasi API (OpenAPI/Swagger) & kontrak integrasi.
+            </li>
+            <li class="justify">
+              Dokumentasi fungsional & kriteria penerimaan (UAT).
+            </li>
+            <li class="justify">
+              Analisis data & query SQL/NoSQL (read/reporting).
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ====================== KEAHLIAN ====================== -->
+      <section id="keahlian" class="section" aria-labelledby="keahlian-title">
+        <h2 id="keahlian-title" class="section-title with-icon">
+          <svg
+            class="title-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M4 7h16M4 12h10M4 17h7"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Keahlian
+        </h2>
+
+        <div class="grid lg:grid-cols-2 gap-7">
+          <div class="glass-soft p-7 rounded-2xl ring-hover-white reveal">
+            <h3 class="text-lg font-semibold text-slate-900">
+              Business Analysis
+            </h3>
+            <ul class="mt-5 space-y-4 text-slate-800">
+              <li class="skill">
+                <span class="skill-name">Requirement Elicitation</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span></span
+                ><span class="badge">Advanced</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">UML/BPMN</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span></span
+                ><span class="badge">Advanced</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">Process Mapping</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span></span
+                ><span class="badge">Advanced</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">Testing (UAT)</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot"></span></span
+                ><span class="badge">Intermediate</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">Estimasi & Prioritas</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot"></span></span
+                ><span class="badge">Intermediate</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="glass-soft p-7 rounded-2xl ring-hover-white reveal">
+            <h3 class="text-lg font-semibold text-slate-900">Technical</h3>
+            <ul class="mt-5 space-y-4 text-slate-800">
+              <li class="skill">
+                <span class="skill-name">SQL/NoSQL (Read)</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot"></span
+                  ><span class="dot"></span></span
+                ><span class="badge">Intermediate</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">API Spec (OpenAPI)</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span></span
+                ><span class="badge">Advanced</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">Tools (Jira/Confluence)</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span></span
+                ><span class="badge">Advanced</span>
+              </li>
+              <li class="skill">
+                <span class="skill-name">Diagramming (draw.io)</span
+                ><span class="skill-level"
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span><span class="dot on"></span
+                  ><span class="dot on"></span></span
+                ><span class="badge">Advanced</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== PROYEK ====================== -->
+      <section id="proyek" class="section" aria-labelledby="proyek-title">
+        <h2 id="proyek-title" class="section-title with-icon">
+          <svg
+            class="title-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <rect x="3" y="4" width="18" height="14" rx="3" stroke-width="2" />
+            <path d="M3 9h18" stroke-width="2" />
+          </svg>
+          Proyek Unggulan
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <article
+            class="glass with-halo p-6 rounded-2xl flex flex-col ring-hover-white reveal hover-lift"
+          >
+            <h3 class="text-slate-900 font-semibold text-lg">
+              Digital Onboarding Banking
+            </h3>
+            <p class="text-slate-800 mt-2 justify">
+              Spesifikasi e-KYC end-to-end & integrasi API verifikasi identitas.
+            </p>
+            <ul class="mt-3 text-slate-800 text-sm list-disc pl-6 space-y-1">
+              <li class="justify">Peran: System Analyst & API Spec</li>
+              <li class="justify">
+                Hasil:
+                <strong class="text-slate-900">-35% waktu onboarding</strong>,
+                +18% akurasi requirement UAT
+              </li>
+              <li class="justify">Tech: OpenAPI, BPMN, OAuth2, REST</li>
+            </ul>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="btn-chip" href="#">Case Study</a>
+              <a class="btn-chip" href="#">Doc</a>
+              <a class="btn-chip" href="#">GitHub</a>
+            </div>
+          </article>
+
+          <article
+            class="glass with-halo p-6 rounded-2xl flex flex-col ring-hover-white reveal hover-lift"
+          >
+            <h3 class="text-slate-900 font-semibold text-lg">
+              Order Management Revamp
+            </h3>
+            <p class="text-slate-800 mt-2 justify">
+              Redesign alur pemesanan & kriteria penerimaan untuk menurunkan
+              error.
+            </p>
+            <ul class="mt-3 text-slate-800 text-sm list-disc pl-6 space-y-1">
+              <li class="justify">
+                Peran: Process Mapping & Acceptance Criteria
+              </li>
+              <li class="justify">
+                Hasil: <strong class="text-slate-900">-28% SLA error</strong>,
+                -20% bug di fase SIT
+              </li>
+              <li class="justify">Tech: UML, BPMN, Confluence, Jira</li>
+            </ul>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="btn-chip" href="#">Case Study</a>
+              <a class="btn-chip" href="#">Doc</a>
+              <a class="btn-chip" href="#">GitHub</a>
+            </div>
+          </article>
+
+          <article
+            class="glass with-halo p-6 rounded-2xl flex flex-col ring-hover-white reveal hover-lift"
+          >
+            <h3 class="text-slate-900 font-semibold text-lg">
+              Billing Reconciliation Tool
+            </h3>
+            <p class="text-slate-800 mt-2 justify">
+              Otomasi rekonsiliasi tagihan lintas sistem untuk mengurangi kerja
+              manual.
+            </p>
+            <ul class="mt-3 text-slate-800 text-sm list-disc pl-6 space-y-1">
+              <li class="justify">
+                Peran: Spesifikasi Fungsional & Data Mapping
+              </li>
+              <li class="justify">
+                Hasil:
+                <strong class="text-slate-900">-20 jam/minggu</strong> kerja
+                manual
+              </li>
+              <li class="justify">Tech: SQL, CSV Import, API Pull</li>
+            </ul>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="btn-chip" href="#">Case Study</a>
+              <a class="btn-chip" href="#">Doc</a>
+              <a class="btn-chip" href="#">GitHub</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ====================== PENGALAMAN ====================== -->
+      <section
+        id="pengalaman"
+        class="section"
+        aria-labelledby="pengalaman-title"
+      >
+        <h2 id="pengalaman-title" class="section-title with-icon">
+          <svg
+            class="title-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M6 9l6-6 6 6M6 15l6 6 6-6"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Pengalaman
+        </h2>
+
+        <ol class="relative border-l border-white/60 pl-7 space-y-9">
+          <li class="reveal">
+            <div class="timeline-dot"></div>
+            <div class="glass p-6 rounded-2xl ring-hover-white">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 class="font-semibold text-slate-900">
+                  PT Sinar Data • System Analyst
+                </h3>
+                <span class="text-slate-700 text-sm">2021 — Sekarang</span>
+              </div>
+              <ul class="mt-3 list-disc pl-6 text-slate-800 space-y-1">
+                <li class="justify">
+                  Memimpin elicitation lintas 6 stakeholder,
+                  <strong class="text-slate-900">+18%</strong> kepuasan UAT.
+                </li>
+                <li class="justify">
+                  Mendesain spesifikasi API untuk 12 layanan inti,
+                  <strong class="text-slate-900">-28%</strong> bug SIT.
+                </li>
+                <li class="justify">
+                  Menginisiasi template spesifikasi standar, percepat handover
+                  <strong class="text-slate-900">1.5x</strong>.
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="reveal">
+            <div class="timeline-dot"></div>
+            <div class="glass p-6 rounded-2xl ring-hover-white">
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 class="font-semibold text-slate-900">
+                  Bank Nusantara • Business Analyst
+                </h3>
+                <span class="text-slate-700 text-sm">2017 — 2021</span>
+              </div>
+              <ul class="mt-3 list-disc pl-6 text-slate-800 space-y-1">
+                <li class="justify">
+                  Mapping proses kredit ritel, turunkan waktu siklus
+                  <strong class="text-slate-900">-22%</strong>.
+                </li>
+                <li class="justify">
+                  Koordinasi UAT 4 squad, tingkatkan akurasi requirement
+                  <strong class="text-slate-900">+15%</strong>.
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ====================== PROSES ====================== -->
+      <section id="proses" class="section" aria-labelledby="proses-title">
+        <h2 id="proses-title" class="section-title with-icon">
+          <svg
+            class="title-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="6" cy="12" r="2" stroke-width="2" />
+            <circle cx="12" cy="12" r="2" stroke-width="2" />
+            <circle cx="18" cy="12" r="2" stroke-width="2" />
+          </svg>
+          Proses Kerja
+        </h2>
+
+        <div class="grid md:grid-cols-5 gap-5">
+          <div
+            class="glass-soft p-5 rounded-2xl text-center ring-hover-white reveal hover-lift"
+          >
+            <div class="mx-auto w-9 h-9 text-slate-800" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  d="M12 20l9-16H3l9 16z"
+                />
+              </svg>
+            </div>
+            <p class="mt-2 text-slate-900 font-semibold">Discover</p>
+            <p class="text-slate-800 text-sm justify">
+              Wawancara, analisis masalah & tujuan.
+            </p>
+          </div>
+
+          <div
+            class="glass-soft p-5 rounded-2xl text-center ring-hover-white reveal hover-lift"
+          >
+            <div class="mx-auto w-9 h-9 text-slate-800" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  d="M4 7h16M4 12h10M4 17h7"
+                />
+              </svg>
+            </div>
+            <p class="mt-2 text-slate-900 font-semibold">Define</p>
+            <p class="text-slate-800 text-sm justify">
+              Rumusan scope & prioritas.
+            </p>
+          </div>
+
+          <div
+            class="glass-soft p-5 rounded-2xl text-center ring-hover-white reveal hover-lift"
+          >
+            <div class="mx-auto w-9 h-9 text-slate-800" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="8" cy="8" r="3" stroke-width="2" />
+                <path stroke-linecap="round" stroke-width="2" d="M13 13l8 8" />
+              </svg>
+            </div>
+            <p class="mt-2 text-slate-900 font-semibold">Design</p>
+            <p class="text-slate-800 text-sm justify">
+              Spesifikasi, diagram, & kontrak API.
+            </p>
+          </div>
+
+          <div
+            class="glass-soft p-5 rounded-2xl text-center ring-hover-white reveal hover-lift"
+          >
+            <div class="mx-auto w-9 h-9 text-slate-800" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <p class="mt-2 text-slate-900 font-semibold">Validate</p>
+            <p class="text-slate-800 text-sm justify">
+              Skenario UAT & penerimaan.
+            </p>
+          </div>
+
+          <div
+            class="glass-soft p-5 rounded-2xl text-center ring-hover-white reveal hover-lift"
+          >
+            <div class="mx-auto w-9 h-9 text-slate-800" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-width="2"
+                  d="M4 8h16M4 16h10M14 22l4-6-4-6"
+                />
+              </svg>
+            </div>
+            <p class="mt-2 text-slate-900 font-semibold">Handover</p>
+            <p class="text-slate-800 text-sm justify">
+              Dokumentasi & knowledge transfer.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== ALAT ====================== -->
+      <section id="alat" class="section" aria-labelledby="alat-title">
+        <h2 id="alat-title" class="section-title with-icon">
+          <svg
+            class="title-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M4 7h16M7 4v6M17 10V4"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Alat & Sertifikasi
+        </h2>
+
+        <div class="glass p-7 rounded-2xl ring-hover-white reveal">
+          <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-slate-800">
+            <li class="tool"><span class="dot"></span>Jira</li>
+            <li class="tool"><span class="dot"></span>Confluence</li>
+            <li class="tool"><span class="dot"></span>Postman</li>
+            <li class="tool"><span class="dot"></span>Swagger/OpenAPI</li>
+            <li class="tool"><span class="dot"></span>draw.io</li>
+            <li class="tool"><span class="dot"></span>Figma (flow)</li>
+            <li class="tool"><span class="dot"></span>Git</li>
+            <li class="tool"><span class="dot"></span>SQL Client</li>
+          </ul>
+          <div class="mt-5">
+            <p class="text-slate-800 text-sm justify">
+              Sertifikasi (placeholder): BA Foundation, Agile Practitioner.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================== TESTIMONI ====================== -->
+      <section id="testimoni" class="section" aria-labelledby="testimoni-title">
+        <h2 id="testimoni-title" class="section-title with-icon">
+          <svg
+            class="title-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+              stroke-width="2"
+            />
+          </svg>
+          Testimoni
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-7">
+          <blockquote
+            class="glass p-6 rounded-2xl ring-hover-white reveal hover-lift"
+          >
+            <p class="text-slate-800 justify">
+              “Raka mengubah requirement samar menjadi spesifikasi yang
+              actionable. Time-to-market kami membaik signifikan.”
+            </p>
+            <footer class="mt-3 text-slate-700 text-sm">— PM, Fintech A</footer>
+          </blockquote>
+
+          <blockquote
+            class="glass p-6 rounded-2xl ring-hover-white reveal hover-lift"
+          >
+            <p class="text-slate-800 justify">
+              “Dokumentasi dan UAT script yang rapi menurunkan bug pada SIT.
+              Kolaborasi bisnis-dev jadi lebih mulus.”
+            </p>
+            <footer class="mt-3 text-slate-700 text-sm">
+              — Lead Engineer, Telco B
+            </footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- ====================== KONTAK ====================== -->
+      <section
+        id="kontak"
+        class="section container mx-auto px-4 md:px-6 lg:px-8"
+      >
+        <div class="glass p-6 md:p-8 with-halo hover-lift">
+          <h2 class="section-title with-icon">
+            <!-- Ikon surat inline SVG -->
+            <svg
+              class="title-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 7.5A2.5 2.5 0 0 1 5.5 5h13A2.5 2.5 0 0 1 21 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5v-9Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+              />
+              <path
+                d="M4 7l8 6 8-6"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Kontak
+          </h2>
+
+          <p class="text-slate-700 mb-6 measure">
+            Isi formulir berikut lalu tekan <strong>Kirim via Email</strong> —
+            aplikasi email Anda akan terbuka otomatis (tanpa backend).
+          </p>
+
+          <form
+            id="kontakForm"
+            class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5"
+            novalidate
+          >
+            <div class="md:col-span-1">
+              <label for="nama" class="block text-slate-800 font-semibold mb-2"
+                >Nama</label
+              >
+              <input
+                id="nama"
+                name="nama"
+                type="text"
+                class="input"
+                placeholder="Nama lengkap"
+                required
+                aria-required="true"
+                autocomplete="name"
+              />
+              <div id="err-nama" class="err" aria-live="polite"></div>
+            </div>
+
+            <div class="md:col-span-1">
+              <label for="email" class="block text-slate-800 font-semibold mb-2"
+                >Email</label
+              >
+              <input
+                id="email"
+                name="email"
+                type="email"
+                class="input"
+                placeholder="nama@domain.com"
+                required
+                aria-required="true"
+                autocomplete="email"
+                inputmode="email"
+              />
+              <div id="err-email" class="err" aria-live="polite"></div>
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="pesan" class="block text-slate-800 font-semibold mb-2"
+                >Pesan</label
+              >
+              <textarea
+                id="pesan"
+                name="pesan"
+                class="input min-h-[9.5rem]"
+                placeholder="Tulis pesan Anda di sini..."
+                required
+                aria-required="true"
+              ></textarea>
+              <div id="err-pesan" class="err" aria-live="polite"></div>
+            </div>
+
+            <div class="md:col-span-2 flex flex-wrap items-center gap-3">
+              <!-- Tombol utama: Kirim via Email (mailto) -->
+              <button type="submit" id="btnMailto" class="btn-primary">
+                Kirim via Email
+              </button>
+
+              <!-- Kontak cepat (opsional, tetap tanpa 'Buka Email Manual') -->
+              <div class="ml-auto flex flex-wrap gap-2">
+                <a
+                  class="btn-chip"
+                  href="mailto:danijuhaenimo@gmail.com"
+                  aria-label="Email langsung"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    class="mr-1"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4 7l8 6 8-6"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <rect
+                      x="3"
+                      y="5"
+                      width="18"
+                      height="14"
+                      rx="2.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    />
+                  </svg>
+                  Email
+                </a>
+                <a
+                  class="btn-chip"
+                  href="https://linkedin.com/in/rakapratama"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Buka LinkedIn"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    class="mr-1"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V24h-4V8.5zM8.5 8.5h3.8v2.1h.1c.5-.9 1.7-2.1 3.6-2.1 3.8 0 4.5 2.5 4.5 5.7V24h-4v-6.8c0-1.6 0-3.7-2.2-3.7s-2.5 1.7-2.5 3.6V24h-4V8.5z"
+                    />
+                  </svg>
+                  LinkedIn
+                </a>
+                <a
+                  class="btn-chip"
+                  href="https://github.com/rakapratama"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Buka GitHub"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    class="mr-1"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.8-.25.8-.56v-2.1c-3.26.71-3.95-1.4-3.95-1.4-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.79 1.2 1.79 1.2 1.04 1.77 2.74 1.26 3.41.96.11-.77.41-1.26.74-1.55-2.6-.29-5.33-1.3-5.33-5.8 0-1.28.46-2.33 1.2-3.15-.12-.29-.52-1.46.12-3.05 0 0 .98-.31 3.2 1.2a11.1 11.1 0 0 1 5.82 0c2.21-1.51 3.19-1.2 3.19-1.2.64 1.6.24 2.77.12 3.05.75.82 1.2 1.87 1.2 3.15 0 4.51-2.74 5.5-5.35 5.79.42.36.79 1.06.79 2.14v3.18c0 .31.21.68.81.56A11.5 11.5 0 0 0 12 .5Z"
+                    />
+                  </svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- ====================== FOOTER ====================== -->
+    <footer
+      class="mt-14 py-9 border-t border-white/60 bg-white/30 backdrop-blur"
+      role="contentinfo"
+    >
+      <div
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-slate-700 text-sm flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
+        <p>
+          &copy; <span id="year"></span> Raka Pratama. Semua hak cipta
+          dilindungi.
+        </p>
+        <nav aria-label="Tautan cepat">
+          <ul class="flex flex-wrap items-center gap-4">
+            <li><a class="link" href="#proyek">Proyek</a></li>
+            <li><a class="link" href="#kontak">Kontak</a></li>
+            <li>
+              <span
+                class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/80 ring-1 ring-white/90 text-slate-9 00"
+              >
+                <svg
+                  class="w-4 h-4 text-emerald-500"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <circle cx="12" cy="12" r="10" opacity=".15" />
+                  <circle cx="12" cy="12" r="4" />
+                </svg>
+                Tersedia untuk kerja</span
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+
+    <!-- Back-to-Top -->
+    <button id="backToTop" aria-label="Kembali ke atas" class="backtotop">
+      <svg
+        class="w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path d="M12 19V5" stroke-width="2" stroke-linecap="round" />
+        <path d="M5 12l7-7 7 7" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <!-- App JS -->
+    <script src="./index.js"></script>
+  </body>
+</html>
