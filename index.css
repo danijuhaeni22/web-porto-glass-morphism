@@ -529,9 +529,8 @@ body {
   box-shadow: none;
 }
 .glass-clear-xl {
-  /* AVATAR CARD: lebih tembus */
+  /* AVATAR CARD: lebih tembus + lebih terangkat */
   background: rgba(255, 255, 255, 0.08);
-  /* tetap terangkat */
   box-shadow: 0 30px 68px var(--shadow-indigo), 0 18px 40px var(--shadow-sky);
 }
 .glass::after,
@@ -600,7 +599,7 @@ body {
   object-fit: cover;
   border-radius: 0.75rem;
 }
-/* jika ada utility width dari framework, paksa agar full di mobile */
+/* paksa full width di mobile untuk container-utility bawaan */
 @media (max-width: 640px) {
   .glass-clear-xl .w-48,
   .glass-clear-xl .w-56,
@@ -609,6 +608,15 @@ body {
   .glass-clear-xl .lg\:w-64 {
     width: 100% !important;
   }
+}
+
+/* ===== Bg match util: background selalu mengikuti image ===== */
+.bg-match {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; /* isi area sama seperti gambar tampil */
+  /* jika ingin 1:1 tanpa crop, ganti ke: background-size:contain; */
+  border-radius: 1rem;
 }
 
 /* ===================== THEME TOGGLE ===================== */
@@ -711,7 +719,7 @@ html.dark .glass-soft {
   -webkit-backdrop-filter: saturate(180%) blur(24px);
 }
 html.dark .glass-clear-xl {
-  background: rgba(10, 15, 28, 0.26); /* TEMBUS: jauh lebih transparan */
+  background: rgba(10, 15, 28, 0.26); /* TEMBUS */
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow: 0 28px 72px rgba(var(--indigo), 0.32),
     0 18px 44px rgba(var(--sky), 0.2);
@@ -786,9 +794,7 @@ html.dark .white-divider {
   );
 }
 
-/* === “Tersedia untuk kerja” pill (dark): gelap agar teks putih terbaca ===
-   Sesuaikan selector ini dengan elemen pill yang kamu pakai.
-   Paling aman: pill di footer dengan class utilitas rounded-md/badge/available. */
+/* === “Tersedia untuk kerja” pill (dark): gelap agar teks putih terbaca === */
 html.dark footer .rounded-md,
 html.dark footer .badge.available,
 html.dark footer .available,
@@ -883,3 +889,19 @@ html.dark #keahlian .skill,
 html.dark #keahlian .skill-name {
   color: #e5e7eb !important;
 }
+
+/* ===== Light mode: garis card soft & tetap kebaca ===== */
+html:not(.dark) .glass,
+html:not(.dark) .glass-soft {
+  /* garis tipis bernuansa indigo pastel (lembut, tidak kontras tajam) */
+  border-color: rgba(124, 116, 232, 0.14); /* indigo-400 @14% */
+  /* inner highlight halus supaya tepi “angkat” tanpa jadi keras */
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65) inset; /* highlight lembut */
+}
+
+/* Avatar card: tetap tembus & terangkat, garisnya juga soft */
+html:not(.dark) .glass-clear-xl {
+  border-color: rgba(124, 116, 232, 0.12);
+}
+
+/* Catatan: hover shadows sebelumnya tetap berlaku seperti semula */

@@ -111,97 +111,6 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   });
 })();
 
-// ============ Contact Form (mailto) ============
-// DUKUNG KEDUA ID: "contactForm" atau "kontakForm"
-const form =
-  document.getElementById("contactForm") ||
-  document.getElementById("kontakForm");
-
-if (form) {
-  const $id = (id) => document.getElementById(id);
-  const TO_EMAIL = "danijuhaenimo@gmail.com";
-
-  // Pastikan tombol submit ada type="submit" di HTML.
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const namaEl = $id("nama");
-    const emailEl = $id("email");
-    const pesanEl = $id("pesan");
-    const nama = (namaEl?.value || "").trim();
-    const email = (emailEl?.value || "").trim();
-    const pesan = (pesanEl?.value || "").trim();
-
-    // reset error
-    ["err-nama", "err-email", "err-pesan"].forEach((id) => {
-      const n = $id(id);
-      if (n) n.textContent = "";
-    });
-    const formMsg = $id("formMsg");
-    if (formMsg) {
-      formMsg.textContent = "";
-      formMsg.className = "mt-3 text-sm";
-    }
-
-    // validasi ringan
-    let valid = true;
-    if (!nama) {
-      $id("err-nama") && ($id("err-nama").textContent = "Nama wajib diisi.");
-      valid = false;
-    }
-    if (!email) {
-      $id("err-email") && ($id("err-email").textContent = "Email wajib diisi.");
-      valid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-      $id("err-email") &&
-        ($id("err-email").textContent = "Format email tidak valid.");
-      valid = false;
-    }
-    if (!pesan) {
-      $id("err-pesan") && ($id("err-pesan").textContent = "Pesan wajib diisi.");
-      valid = false;
-    }
-    if (!valid) return;
-
-    // Bangun mailto
-    const subject = encodeURIComponent(`[Portofolio] Pesan dari ${nama}`);
-    const body = encodeURIComponent(
-      `Nama  : ${nama}\nEmail : ${email}\n\nPesan:\n${pesan}`
-    );
-    const mailtoURL = `mailto:${TO_EMAIL}?subject=${subject}&body=${body}`;
-
-    // Fallback 1: anchor.click() (paling kompatibel di iOS/Safari)
-    const a = document.createElement("a");
-    a.href = mailtoURL;
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    // Fallback 2: location.assign (Chrome/Edge/Firefox lazim)
-    setTimeout(() => {
-      try {
-        window.location.assign(mailtoURL);
-      } catch {}
-
-      // Fallback 3: window.open (beberapa browser/handler mail)
-      setTimeout(() => {
-        try {
-          window.open(mailtoURL, "_self");
-        } catch {}
-      }, 120);
-    }, 80);
-
-    if (formMsg) {
-      formMsg.textContent = `Membuka aplikasi email Anda... Jika tidak muncul, kirim manual ke ${TO_EMAIL}`;
-      formMsg.className = "mt-3 text-sm text-slate-700";
-    }
-  });
-} else {
-  // Jika form tidak ditemukan, bantu debug di Console
-  // console.warn("Form kontak tidak ditemukan. Pastikan id-nya 'contactForm' atau 'kontakForm'.");
-}
-
 // ============ Force Download CV (Blob) ============
 async function forceDownload(url, filename) {
   try {
@@ -284,4 +193,200 @@ if (dl2) {
     if (mql.addEventListener) mql.addEventListener("change", onChange);
     else mql.addListener(onChange); // Safari lama
   }
+})();
+
+// ============ Util: Toast Notifikasi ============
+function showToast({
+  title = "Berhasil",
+  message = "",
+  type = "success",
+} = {}) {
+  // type: success | error | info
+  const wrap = document.createElement("div");
+  wrap.className = "fixed bottom-4 right-4 z-50 animate-[fadeIn_.2s_ease]";
+
+  const base =
+    "min-w-[260px] max-w-[92vw] sm:max-w-sm px-4 py-3 rounded-xl ring-1 shadow-xl flex items-start gap-3 " +
+    "backdrop-blur";
+  const tone =
+    type === "success"
+      ? "bg-white/95 ring-white/70 text-slate-900 dark:bg-slate-900/90 dark:text-white dark:ring-white/15"
+      : type === "error"
+      ? "bg-rose-50/95 ring-rose-200 text-rose-900 dark:bg-rose-900/80 dark:text-rose-50 dark:ring-rose-700/40"
+      : "bg-white/95 ring-white/70 text-slate-900 dark:bg-slate-900/90 dark:text-white dark:ring-white/15";
+
+  const icon =
+    type === "success"
+      ? `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round"/></svg>`
+      : type === "error"
+      ? `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4m0 4h.01M12 3a9 9 0 110 18 9 9 0 010-18z" stroke-width="2" stroke-linecap="round"/></svg>`
+      : `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 16h-1v-4h-1m1-4h.01M12 19a7 7 0 110-14 7 7 0 010 14z" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+  wrap.innerHTML = `
+    <div class="${base} ${tone}">
+      ${icon}
+      <div class="flex-1">
+        <p class="font-semibold">${title}</p>
+        ${
+          message ? `<p class="text-sm mt-0.5 leading-snug">${message}</p>` : ""
+        }
+      </div>
+      <button aria-label="Tutup" class="shrink-0 rounded-md px-2 py-1 text-sm hover:bg-black/5 dark:hover:bg-white/10">✕</button>
+    </div>
+  `;
+  document.body.appendChild(wrap);
+  const closeBtn = wrap.querySelector("button");
+  const remove = () => {
+    wrap.style.animation = "fadeOut .18s ease forwards";
+    setTimeout(() => wrap.remove(), 180);
+  };
+  closeBtn.addEventListener("click", remove);
+  setTimeout(remove, 4200);
+}
+
+// Inject keyframes fadeIn/fadeOut sekali saja
+(() => {
+  const id = "toast-anim";
+  if (!document.getElementById(id)) {
+    const s = document.createElement("style");
+    s.id = id;
+    s.textContent =
+      "@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}" +
+      "@keyframes fadeOut{to{opacity:0;transform:translateY(6px)}}";
+    document.head.appendChild(s);
+  }
+})();
+
+// ============ Contact Form — Formspree only (no mailto) ============
+(() => {
+  const FORM_ENDPOINT = "https://formspree.io/f/mjkakjpl"; // <- endpoint kamu
+  const form =
+    document.getElementById("contactForm") ||
+    document.getElementById("kontakForm");
+  if (!form) return;
+
+  const $id = (id) => document.getElementById(id);
+  const btn = document.getElementById("btnKirim");
+  const formMsg = $id("formMsg");
+
+  const setBusy = (busy) => {
+    if (!btn) return;
+    btn.disabled = busy;
+    btn.style.opacity = busy ? "0.75" : "1";
+    btn.style.pointerEvents = busy ? "none" : "auto";
+    btn.innerHTML = busy
+      ? `<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2" opacity=".25"/><path d="M12 3a9 9 0 0 1 9 9" stroke-width="2"/></svg> Mengirim...`
+      : `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 2L11 13" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22l-4-9-9-4 20-7Z" stroke-width="2" stroke-linecap="round"/></svg> Kirim`;
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const namaEl = $id("nama");
+    const emailEl = $id("email");
+    const pesanEl = $id("pesan");
+    const hpEl = $id("website"); // honeypot
+    const nama = (namaEl?.value || "").trim();
+    const email = (emailEl?.value || "").trim();
+    const pesan = (pesanEl?.value || "").trim();
+    const honeypot = (hpEl?.value || "").trim();
+
+    // Reset error
+    ["err-nama", "err-email", "err-pesan"].forEach((id) => {
+      const n = $id(id);
+      if (n) n.textContent = "";
+    });
+    if (formMsg) {
+      formMsg.textContent = "";
+      formMsg.className = "mt-1 md:col-span-2 text-sm";
+    }
+
+    // Validasi sederhana
+    let valid = true;
+    if (!nama) {
+      $id("err-nama") && ($id("err-nama").textContent = "Nama wajib diisi.");
+      valid = false;
+    }
+    if (!email) {
+      $id("err-email") && ($id("err-email").textContent = "Email wajib diisi.");
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      $id("err-email") &&
+        ($id("err-email").textContent = "Format email tidak valid.");
+      valid = false;
+    }
+    if (!pesan) {
+      $id("err-pesan") && ($id("err-pesan").textContent = "Pesan wajib diisi.");
+      valid = false;
+    }
+    // Honeypot harus kosong. Jika terisi, pura-pura sukses (supaya bot diam), tapi jangan kirim.
+    if (honeypot) {
+      showToast({
+        title: "Terkirim",
+        message: "Terima kasih! Kami akan segera membalas.",
+        type: "success",
+      });
+      form.reset();
+      return;
+    }
+    if (!valid) return;
+
+    // Kirim ke Formspree
+    try {
+      setBusy(true);
+      if (formMsg) {
+        formMsg.textContent = "Mengirim...";
+        formMsg.className = "mt-1 md:col-span-2 text-sm text-slate-600";
+      }
+
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nama, email, pesan }),
+      });
+
+      if (res.ok) {
+        showToast({
+          title: "Pesan terkirim 🎉",
+          message: "Terima kasih! Saya akan membalas secepatnya ke email Anda.",
+          type: "success",
+        });
+        if (formMsg) {
+          formMsg.textContent =
+            "Terkirim. Cek email Anda untuk konfirmasi (bila diminta).";
+          formMsg.className = "mt-1 md:col-span-2 text-sm text-emerald-600";
+        }
+        form.reset();
+      } else {
+        // coba baca pesan error dari Formspree
+        let errText = "Gagal mengirim. Coba lagi sebentar lagi.";
+        try {
+          const data = await res.json();
+          if (data?.errors && data.errors.length) {
+            errText = data.errors.map((e) => e.message).join(", ");
+          }
+        } catch {}
+        showToast({ title: "Gagal mengirim", message: errText, type: "error" });
+        if (formMsg) {
+          formMsg.textContent = errText;
+          formMsg.className = "mt-1 md:col-span-2 text-sm text-rose-600";
+        }
+      }
+    } catch (err) {
+      showToast({
+        title: "Jaringan bermasalah",
+        message: "Periksa koneksi Anda lalu coba lagi.",
+        type: "error",
+      });
+      if (formMsg) {
+        formMsg.textContent = "Jaringan bermasalah. Silakan coba lagi.";
+        formMsg.className = "mt-1 md:col-span-2 text-sm text-rose-600";
+      }
+    } finally {
+      setBusy(false);
+    }
+  });
 })();

@@ -72,9 +72,7 @@
           var theme = saved || (prefersDark ? "dark" : "light");
           if (theme === "dark") document.documentElement.classList.add("dark");
           document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {
-          /* no-op */
-        }
+        } catch (e) {}
       })();
     </script>
 
@@ -326,50 +324,37 @@
             </div>
           </div>
 
-          <!-- Avatar Card (clear acrylic + halo) -->
-          <div
-            class="glass-clear-xl with-halo p-7 sm:p-8 rounded-2xl shadow-xl ring-hover-white reveal"
-          >
-            <div class="flex items-center gap-8">
-              <div
-                class="w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-3xl overflow-hidden ring-1 ring-white/55 bg-white/20 flex items-center justify-center shadow"
+          <!-- Avatar Card: super transparan, shadow persist, gambar responsif -->
+          <div class="glass-clear-xl with-halo p-6 sm:p-7 rounded-2xl reveal">
+            <div
+              class="flex flex-col sm:flex-row items-center sm:items-start gap-6"
+            >
+              <!-- Wrapper bg-match: background bisa diset == img (di CSS/JS) -->
+              <figure
+                class="bg-match w-full max-w-xs sm:max-w-none sm:w-56 lg:w-64 rounded-3xl overflow-hidden ring-1 ring-white/50"
+                id="avatarFigure"
               >
-                <svg
-                  viewBox="0 0 200 200"
-                  class="w-full h-full"
-                  role="img"
-                  aria-label="Avatar placeholder"
-                >
-                  <rect width="200" height="200" rx="24" fill="#F8FAFC" />
-                  <circle
-                    cx="100"
-                    cy="72"
-                    r="34"
-                    fill="#FFFFFF"
-                    opacity="0.96"
-                  />
-                  <rect
-                    x="44"
-                    y="118"
-                    width="112"
-                    height="56"
-                    rx="26"
-                    fill="#FFFFFF"
-                    opacity="0.96"
-                  />
-                </svg>
-              </div>
-              <div>
+                <!-- Gambar responsif; jika assets/avatar.jpg tidak ada, fallback ke SVG -->
+                <img
+                  id="avatarImg"
+                  src="./assets/avatar.jpg"
+                  alt="Foto profil Raka Pratama"
+                  class="block w-full h-auto"
+                  onerror="this.replaceWith(document.getElementById('avatarFallback').content.cloneNode(true))"
+                />
+              </figure>
+
+              <div class="text-center sm:text-left">
                 <h2 class="text-slate-900 text-2xl font-extrabold">
                   Raka Pratama
                 </h2>
                 <p class="text-slate-700 text-sm">
                   System Analyst • Jakarta, ID
                 </p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <a href="mailto:danijuhaenimo@gmail.com" class="btn-chip"
-                    >Email</a
-                  >
+                <div
+                  class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start"
+                >
+                  <a href="#kontak" class="btn-chip">Email</a>
                   <a
                     href="https://linkedin.com/in/rakapratama"
                     target="_blank"
@@ -388,6 +373,28 @@
               </div>
             </div>
           </div>
+
+          <!-- Fallback SVG template (dipakai jika gambar gagal dimuat) -->
+          <template id="avatarFallback">
+            <svg
+              viewBox="0 0 200 200"
+              class="w-full h-auto block"
+              role="img"
+              aria-label="Avatar placeholder"
+            >
+              <rect width="200" height="200" rx="24" fill="#F8FAFC" />
+              <circle cx="100" cy="72" r="34" fill="#FFFFFF" opacity="0.96" />
+              <rect
+                x="44"
+                y="118"
+                width="112"
+                height="56"
+                rx="26"
+                fill="#FFFFFF"
+                opacity="0.96"
+              />
+            </svg>
+          </template>
         </div>
 
         <div class="white-divider mt-10"></div>
@@ -446,45 +453,23 @@
             <h3 class="text-lg font-semibold text-slate-900">
               Business Analysis
             </h3>
-            <ul class="mt-5 space-y-4 text-slate-800">
-              <li class="skill">
-                <span class="skill-name">Requirement Elicitation</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span></span
+            <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-slate-800">
+              <li class="flex items-center justify-between">
+                <span>Requirement Elicitation</span
                 ><span class="badge">Advanced</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">UML/BPMN</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span></span
-                ><span class="badge">Advanced</span>
+              <li class="flex items-center justify-between">
+                <span>UML / BPMN</span><span class="badge">Advanced</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">Process Mapping</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span></span
-                ><span class="badge">Advanced</span>
+              <li class="flex items-center justify-between">
+                <span>Process Mapping</span><span class="badge">Advanced</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">Testing (UAT)</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot"></span></span
+              <li class="flex items-center justify-between">
+                <span>Testing (UAT)</span
                 ><span class="badge">Intermediate</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">Estimasi & Prioritas</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot"></span></span
+              <li class="flex items-center justify-between">
+                <span>Estimasi & Prioritas</span
                 ><span class="badge">Intermediate</span>
               </li>
             </ul>
@@ -492,37 +477,21 @@
 
           <div class="glass-soft p-7 rounded-2xl ring-hover-white reveal">
             <h3 class="text-lg font-semibold text-slate-900">Technical</h3>
-            <ul class="mt-5 space-y-4 text-slate-800">
-              <li class="skill">
-                <span class="skill-name">SQL/NoSQL (Read)</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot"></span
-                  ><span class="dot"></span></span
+            <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-slate-800">
+              <li class="flex items-center justify-between">
+                <span>SQL / NoSQL (Read)</span
                 ><span class="badge">Intermediate</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">API Spec (OpenAPI)</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span></span
+              <li class="flex items-center justify-between">
+                <span>API Spec (OpenAPI)</span
                 ><span class="badge">Advanced</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">Tools (Jira/Confluence)</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span></span
+              <li class="flex items-center justify-between">
+                <span>Tools (Jira/Confluence)</span
                 ><span class="badge">Advanced</span>
               </li>
-              <li class="skill">
-                <span class="skill-name">Diagramming (draw.io)</span
-                ><span class="skill-level"
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span><span class="dot on"></span
-                  ><span class="dot on"></span></span
+              <li class="flex items-center justify-between">
+                <span>Diagramming (draw.io)</span
                 ><span class="badge">Advanced</span>
               </li>
             </ul>
@@ -826,7 +795,7 @@
         </h2>
 
         <div class="glass p-7 rounded-2xl ring-hover-white reveal">
-          <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-slate-800">
+          <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-slate-8 00">
             <li class="tool"><span class="dot"></span>Jira</li>
             <li class="tool"><span class="dot"></span>Confluence</li>
             <li class="tool"><span class="dot"></span>Postman</li>
@@ -875,7 +844,7 @@
           <blockquote
             class="glass p-6 rounded-2xl ring-hover-white reveal hover-lift"
           >
-            <p class="text-slate-800 justify">
+            <p class="text-slate-8 00 justify">
               “Dokumentasi dan UAT script yang rapi menurunkan bug pada SIT.
               Kolaborasi bisnis-dev jadi lebih mulus.”
             </p>
@@ -886,14 +855,13 @@
         </div>
       </section>
 
-      <!-- ====================== KONTAK ====================== -->
+      <!-- ====================== KONTAK (Formspree + Honeypot + Toast) ====================== -->
       <section
         id="kontak"
         class="section container mx-auto px-4 md:px-6 lg:px-8"
       >
         <div class="glass p-6 md:p-8 with-halo hover-lift">
           <h2 class="section-title with-icon">
-            <!-- Ikon surat inline SVG -->
             <svg
               class="title-icon"
               viewBox="0 0 24 24"
@@ -917,8 +885,8 @@
           </h2>
 
           <p class="text-slate-700 mb-6 measure">
-            Isi formulir berikut lalu tekan <strong>Kirim via Email</strong> —
-            aplikasi email Anda akan terbuka otomatis (tanpa backend).
+            Isi formulir berikut dan tekan <strong>Kirim</strong> — pesan Anda
+            akan terkirim melalui Formspree.
           </p>
 
           <form
@@ -976,46 +944,52 @@
               <div id="err-pesan" class="err" aria-live="polite"></div>
             </div>
 
+            <!-- Honeypot (harus kosong) -->
+            <div class="hidden" aria-hidden="true">
+              <label for="website" class="sr-only">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- Status bar halus (untuk pesan progres/sukses) -->
+            <div
+              id="formMsg"
+              class="mt-1 md:col-span-2 text-sm"
+              aria-live="polite"
+            ></div>
+
             <div class="md:col-span-2 flex flex-wrap items-center gap-3">
-              <!-- Tombol utama: Kirim via Email (mailto) -->
-              <button type="submit" id="btnMailto" class="btn-primary">
-                Kirim via Email
+              <button
+                type="submit"
+                id="btnKirim"
+                class="btn-primary inline-flex items-center gap-2"
+              >
+                <svg
+                  class="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M22 2L11 13"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M22 2L15 22l-4-9-9-4 20-7Z"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Kirim
               </button>
 
-              <!-- Kontak cepat (opsional, tetap tanpa 'Buka Email Manual') -->
               <div class="ml-auto flex flex-wrap gap-2">
-                <a
-                  class="btn-chip"
-                  href="mailto:danijuhaenimo@gmail.com"
-                  aria-label="Email langsung"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    class="mr-1"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M4 7l8 6 8-6"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <rect
-                      x="3"
-                      y="5"
-                      width="18"
-                      height="14"
-                      rx="2.5"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                    />
-                  </svg>
-                  Email
-                </a>
                 <a
                   class="btn-chip"
                   href="https://linkedin.com/in/rakapratama"
@@ -1085,7 +1059,7 @@
             <li><a class="link" href="#kontak">Kontak</a></li>
             <li>
               <span
-                class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/80 ring-1 ring-white/90 text-slate-9 00"
+                class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white/80 ring-1 ring-white/90 text-slate-900 dark:bg-slate-900/85 dark:text-white dark:ring-white/15"
               >
                 <svg
                   class="w-4 h-4 text-emerald-500"
@@ -1095,8 +1069,8 @@
                   <circle cx="12" cy="12" r="10" opacity=".15" />
                   <circle cx="12" cy="12" r="4" />
                 </svg>
-                Tersedia untuk kerja</span
-              >
+                Tersedia untuk kerja
+              </span>
             </li>
           </ul>
         </nav>
@@ -1118,5 +1092,20 @@
 
     <!-- App JS -->
     <script src="./index.js"></script>
+
+    <!-- Sinkronisasi bg wrapper dengan gambar avatar -->
+    <script>
+      (function () {
+        var fig = document.getElementById("avatarFigure");
+        var img = document.getElementById("avatarImg");
+        if (fig && img && img.complete && img.naturalWidth) {
+          fig.style.backgroundImage = "url('" + img.src + "')";
+        } else if (img) {
+          img.addEventListener("load", function () {
+            if (fig) fig.style.backgroundImage = "url('" + img.src + "')";
+          });
+        }
+      })();
+    </script>
   </body>
 </html>
