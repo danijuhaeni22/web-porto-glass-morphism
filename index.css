@@ -904,4 +904,16 @@ html:not(.dark) .glass-clear-xl {
   border-color: rgba(124, 116, 232, 0.12);
 }
 
+/* ==== Navbar brand subtitle contrast fix ====
+   Target: paragraf setelah .brand-title (System Analyst)
+   Biar dinamis & selalu terbaca di light/dark */
+.glass-nav .brand-title + p {
+  color: #0f172a !important; /* light mode: gelap */
+}
+
+html.dark .glass-nav .brand-title + p,
+html[data-theme="dark"] .glass-nav .brand-title + p {
+  color: #e5e7eb !important; /* dark mode: terang */
+}
+
 /* Catatan: hover shadows sebelumnya tetap berlaku seperti semula */

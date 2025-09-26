@@ -4,16 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Raka Pratama — System Analyst Portfolio</title>
+    <title>Dani Juhaeni — System Analyst Portfolio</title>
     <meta
       name="description"
-      content="Portofolio satu halaman Raka Pratama, System Analyst yang mengubah kebutuhan bisnis menjadi spesifikasi teknis yang jelas, terukur, dan dapat diuji."
+      content="Portofolio satu halaman Dani Juhaeni, System Analyst yang mengubah kebutuhan bisnis menjadi spesifikasi teknis yang jelas, terukur, dan dapat diuji."
     />
 
     <!-- Open Graph -->
     <meta
       property="og:title"
-      content="Raka Pratama — System Analyst Portfolio"
+      content="Dani Juhaeni — System Analyst Portfolio"
     />
     <meta
       property="og:description"
@@ -24,7 +24,7 @@
     <!-- Favicon (data URI placeholder) -->
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' rx='24' ry='24' fill='%2393c5fd'/%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-size='64' fill='%231e3a8a' font-family='ui-sans-serif,system-ui,-apple-system' %3ER%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' rx='24' ry='24' fill='%2393c5fd'/%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-size='64' fill='%231e3a8a' font-family='ui-sans-serif,system-ui,-apple-system' %3ED%3C/text%3E%3C/svg%3E"
     />
 
     <!-- Font: Manrope -->
@@ -112,9 +112,12 @@
             <span class="sr-only">Ke bagian atas</span>
             <div class="hidden sm:block">
               <p class="brand-title text-slate-900 font-semibold leading-tight">
-                Raka Pratama
+                Dani Juhaeni
               </p>
-              <p class="text-slate-600 text-xs">System Analyst</p>
+              <!-- HANYA BARIS INI YANG DIUBAH: kontras tinggi di light & dark -->
+              <p class="text-xs text-slate-900 dark:text-white">
+                System Analyst
+              </p>
             </div>
           </a>
 
@@ -324,21 +327,21 @@
             </div>
           </div>
 
-          <!-- Avatar Card: super transparan, shadow persist, gambar responsif -->
+          <!-- Avatar Card: transparan, tanpa border ring, konten di-center -->
           <div class="glass-clear-xl with-halo p-6 sm:p-7 rounded-2xl reveal">
             <div
-              class="flex flex-col sm:flex-row items-center sm:items-start gap-6"
+              class="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-center gap-6 mx-auto"
             >
-              <!-- Wrapper bg-match: background bisa diset == img (di CSS/JS) -->
+              <!-- Wrapper bg-match -->
               <figure
-                class="bg-match w-full max-w-xs sm:max-w-none sm:w-56 lg:w-64 rounded-3xl overflow-hidden ring-1 ring-white/50"
+                class="bg-match w-full max-w-xs sm:max-w-none sm:w-56 lg:w-64 rounded-3xl overflow-hidden"
                 id="avatarFigure"
               >
-                <!-- Gambar responsif; jika assets/avatar.jpg tidak ada, fallback ke SVG -->
+                <!-- Gambar responsif -->
                 <img
                   id="avatarImg"
-                  src="./assets/avatar.jpg"
-                  alt="Foto profil Raka Pratama"
+                  src="./assets/avatar.png"
+                  alt="Foto profil Dani Juhaeni"
                   class="block w-full h-auto"
                   onerror="this.replaceWith(document.getElementById('avatarFallback').content.cloneNode(true))"
                 />
@@ -346,9 +349,9 @@
 
               <div class="text-center sm:text-left">
                 <h2 class="text-slate-900 text-2xl font-extrabold">
-                  Raka Pratama
+                  Dani Juhaeni
                 </h2>
-                <p class="text-slate-700 text-sm">
+                <p class="text-slate-700 dark:text-slate-300 text-sm">
                   System Analyst • Jakarta, ID
                 </p>
                 <div
@@ -795,7 +798,7 @@
         </h2>
 
         <div class="glass p-7 rounded-2xl ring-hover-white reveal">
-          <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-slate-8 00">
+          <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-slate-800">
             <li class="tool"><span class="dot"></span>Jira</li>
             <li class="tool"><span class="dot"></span>Confluence</li>
             <li class="tool"><span class="dot"></span>Postman</li>
@@ -835,7 +838,7 @@
             class="glass p-6 rounded-2xl ring-hover-white reveal hover-lift"
           >
             <p class="text-slate-800 justify">
-              “Raka mengubah requirement samar menjadi spesifikasi yang
+              “Dani mengubah requirement samar menjadi spesifikasi yang
               actionable. Time-to-market kami membaik signifikan.”
             </p>
             <footer class="mt-3 text-slate-700 text-sm">— PM, Fintech A</footer>
@@ -844,7 +847,7 @@
           <blockquote
             class="glass p-6 rounded-2xl ring-hover-white reveal hover-lift"
           >
-            <p class="text-slate-8 00 justify">
+            <p class="text-slate-800 justify">
               “Dokumentasi dan UAT script yang rapi menurunkan bug pada SIT.
               Kolaborasi bisnis-dev jadi lebih mulus.”
             </p>
@@ -956,7 +959,7 @@
               />
             </div>
 
-            <!-- Status bar halus (untuk pesan progres/sukses) -->
+            <!-- Status bar halus -->
             <div
               id="formMsg"
               class="mt-1 md:col-span-2 text-sm"
@@ -1050,7 +1053,7 @@
         class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-slate-700 text-sm flex flex-col sm:flex-row items-center justify-between gap-3"
       >
         <p>
-          &copy; <span id="year"></span> Raka Pratama. Semua hak cipta
+          &copy; <span id="year"></span> Dani Juhaeni. Semua hak cipta
           dilindungi.
         </p>
         <nav aria-label="Tautan cepat">
