@@ -1,35 +1,85 @@
-/* =========================
+/* ======================================================================
    index.css — Glass Morphism Pastel + Textured Glass
-   (Frost ringan ala navbar, transparansi ditingkatkan,
-    avatar card tembus + image responsif,
-    "Tersedia untuk kerja" dark friendly,
-    keahlian tanpa dots / progress)
+   Refactor: struktur rapi, token konsisten, aksesibilitas aman,
+   tanpa mengubah layout, styling, dan fungsi yang sudah ada.
+   ====================================================================== */
+
+/* =========================
+   0) TOKENS & GLOBAL RESET
    ========================= */
 
-/* ===== Global ===== */
+/* Box sizing yang konsisten */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Theme tokens */
+:root {
+  /* RGB components (dipakai di rgba(var(--color), a)) */
+  --indigo: 124, 116, 232;
+  --sky: 56, 189, 248;
+
+  /* Shadows */
+  --shadow-indigo: rgba(var(--indigo), 0.26);
+  --shadow-sky: rgba(var(--sky), 0.2);
+
+  /* Timing */
+  --t-fast: 0.15s;
+  --t-med: 0.25s;
+  --t-slow: 0.45s;
+
+  /* Radii */
+  --r-lg: 1rem;
+  --r-md: 0.75rem;
+
+  /* Z-index util */
+  --z-under: -2;
+  --z-grain: -1;
+  --z-fg: 1;
+}
+
+/* =========================
+   1) BASE & TYPOGRAPHY
+   ========================= */
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
   letter-spacing: 0.001em;
 }
+
+/* Section spacing & anchor offset */
 .section {
   scroll-margin-top: 6.5rem;
   margin-top: 4.25rem;
 }
+
+/* Measure / readability */
 .measure {
   max-width: 65ch;
 }
+
+/* Text justify helper */
 .justify {
   text-align: justify;
   text-justify: inter-word;
 }
 
-/* ===== Background Option 1: Pastel gradient + grain ===== */
+/* =========================
+   2) BACKGROUNDS & OVERLAYS
+   ========================= */
+
+/* Pastel gradient + grain */
 .bg-pastel {
   background: linear-gradient(180deg, #f7fbff 0%, #eef6ff 50%, #f8fbff 100%)
     fixed;
 }
+
+/* Radial soft accents */
 .bg-radial {
   background: radial-gradient(
       900px 440px at 12% -10%,
@@ -43,13 +93,14 @@ body {
     );
   opacity: 0.55;
 }
-/* grain halus di seluruh body */
+
+/* Grain halus seluruh body */
 .body-grain::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: var(--z-grain);
   background-image: url("data:image/svg+xml;utf8,\
     <svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'>\
       <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/>\
@@ -62,12 +113,12 @@ body {
   opacity: 0.35;
 }
 
-/* ===== Background Option 4: Subtle grid ===== */
+/* Subtle grid */
 .bg-grid::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: var(--z-under);
   pointer-events: none;
   background-image: linear-gradient(
       to right,
@@ -79,11 +130,15 @@ body {
   opacity: 0.45;
   mix-blend-mode: multiply;
 }
+
 .pastel-overlay {
   opacity: 0.45;
 }
 
-/* Aksesibilitas */
+/* =========================
+   3) ACCESSIBILITY HELPERS
+   ========================= */
+
 .skip-link {
   position: absolute;
   left: -999px;
@@ -106,7 +161,10 @@ body {
   outline: 2px solid #60a5fa;
 }
 
-/* Hero Title */
+/* =========================
+   4) TYPOGRAPHY COMPONENTS
+   ========================= */
+
 .hero-title {
   font-weight: 800;
   font-size: clamp(2rem, 1.2rem + 2.4vw, 3rem);
@@ -118,39 +176,46 @@ body {
   hyphens: auto;
 }
 
-/* ===== Theme tokens ===== */
-:root {
-  --indigo: 124, 116, 232;
-  --sky: 56, 189, 248;
-  --shadow-indigo: rgba(var(--indigo), 0.26);
-  --shadow-sky: rgba(var(--sky), 0.2);
-}
+/* =========================
+   5) NAVBAR & NAV LINKS
+   ========================= */
 
-/* ===================== NAVBAR ===================== */
 #appHeader {
   position: sticky;
   top: 0.75rem;
   z-index: 60;
 }
+
 .glass-nav {
   position: relative;
-  border-radius: 1rem;
+  border-radius: var(--r-lg);
   overflow: hidden;
   background: rgba(255, 255, 255, 0.1);
   border: 1.5px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  /* Fallback: tanpa backdrop-filter, tingkatkan opasitas sedikit */
+  background-clip: padding-box;
+  transition: background-color var(--t-slow), border-color var(--t-slow),
+    transform var(--t-slow);
   box-shadow: none !important;
   transform: translateY(-10px);
   opacity: 0;
   animation: nav-in 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s forwards;
-  transition: background-color 0.45s, border-color 0.45s, transform 0.45s;
 }
+
+/* Gunakan backdrop hanya jika didukung */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass-nav {
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+  }
+}
+
 .glass-nav nav {
   height: 3.25rem;
 }
-.glass-nav::before,
-.glass-nav::after {
+
+.glass-nav::after,
+.glass-nav::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -178,12 +243,14 @@ body {
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
 }
+
 .nav-scrolled .glass-nav {
   background: rgba(255, 255, 255, 0.16);
   border-color: rgba(255, 255, 255, 0.6);
   box-shadow: none !important;
   transform: translateY(0);
 }
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -205,7 +272,7 @@ body {
 .nav-link::after {
   content: "";
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   bottom: -3px;
   height: 2px;
   width: 0%;
@@ -215,7 +282,7 @@ body {
     rgba(2, 132, 199, 0.4)
   );
   border-radius: 9999px;
-  transition: width 0.25s ease;
+  transition: width var(--t-med) ease;
 }
 .nav-link:hover::after,
 .nav-link:focus::after {
@@ -230,6 +297,10 @@ body {
   margin-left: 1rem;
 }
 
+/* =========================
+   6) BUTTONS & CHIPS & LINKS
+   ========================= */
+
 .btn-cta {
   white-space: nowrap;
   background: #3b82f6;
@@ -239,7 +310,8 @@ body {
   border: 1.5px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 10px 26px rgba(var(--indigo), 0.16),
     0 6px 16px rgba(var(--sky), 0.12);
-  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease;
+  transition: transform var(--t-fast) ease, background var(--t-fast) ease,
+    box-shadow 0.2s ease;
 }
 .btn-cta:hover {
   background: #2563eb;
@@ -247,13 +319,13 @@ body {
   box-shadow: 0 14px 32px rgba(var(--indigo), 0.2),
     0 10px 24px rgba(var(--sky), 0.16);
 }
+
 .btn-burger {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  place-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 0.75rem;
+  border-radius: var(--r-md);
   border: 1.5px solid rgba(255, 255, 255, 0.72);
   background: rgba(255, 255, 255, 0.48);
   color: #0f172a;
@@ -261,7 +333,6 @@ body {
     0 6px 16px rgba(139, 92, 246, 0.1);
 }
 
-/* ============ Titles/Accents ============ */
 .section-title {
   font-size: clamp(1.6rem, 1.1rem + 1.3vw, 2.1rem);
   font-weight: 800;
@@ -281,6 +352,7 @@ body {
     rgba(2, 132, 199, 0.4)
   );
 }
+
 .with-icon {
   display: flex;
   align-items: center;
@@ -292,7 +364,6 @@ body {
   color: #1e3a8a;
 }
 
-/* Buttons & chips */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -313,7 +384,8 @@ body {
   border: 1.5px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 10px 24px rgba(var(--indigo), 0.16),
     0 6px 16px rgba(var(--sky), 0.12);
-  transition: transform 0.15s ease, filter 0.15s ease, background 0.15s ease;
+  transition: transform var(--t-fast) ease, filter var(--t-fast) ease,
+    background var(--t-fast) ease;
 }
 .btn-primary:hover {
   transform: translateY(-1px);
@@ -327,7 +399,7 @@ body {
   background: rgba(255, 255, 255, 0.98);
   color: #0f172a;
   border: 1.5px solid #fff;
-  transition: transform 0.15s ease, background 0.15s ease;
+  transition: transform var(--t-fast) ease, background var(--t-fast) ease;
 }
 .btn-ghost:hover {
   background: #fff;
@@ -342,14 +414,13 @@ body {
   color: #0f172a;
   border-radius: 0.6rem;
   border: 1.5px solid #fff;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform var(--t-fast) ease, box-shadow var(--t-fast) ease;
 }
 .btn-chip:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(var(--indigo), 0.18),
     0 6px 14px rgba(var(--sky), 0.14);
 }
-
 .link {
   color: #0f172a;
   text-underline-offset: 4px;
@@ -358,7 +429,10 @@ body {
   text-decoration: underline;
 }
 
-/* ===== Skills (tanpa slider / dots / progress) ===== */
+/* =========================
+   7) SKILLS & BADGES
+   ========================= */
+
 .skill {
   display: flex;
   align-items: center;
@@ -370,10 +444,10 @@ body {
 .skill-name {
   font-size: 0.95rem;
   font-weight: 700;
-} /* cukup teks tebal */
+}
 .skill-level {
   display: none !important;
-} /* sembunyikan dots/progress sepenuhnya */
+}
 .badge {
   background: #fff;
   color: #0f172a;
@@ -383,7 +457,10 @@ body {
   padding: 0.12rem 0.5rem;
 }
 
-/* Timeline */
+/* =========================
+   8) TIMELINE & DIVIDERS
+   ========================= */
+
 .timeline-dot {
   position: absolute;
   left: -0.375rem;
@@ -408,7 +485,10 @@ body {
   );
 }
 
-/* ======== INPUTS ======== */
+/* =========================
+   9) FORMS & INPUTS
+   ========================= */
+
 .input {
   width: 100%;
   border-radius: 1rem;
@@ -417,8 +497,8 @@ body {
   color: #0f172a;
   border: 1px solid rgba(124, 116, 232, 0.45);
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease,
-    background 0.15s ease;
+  transition: border-color var(--t-fast) ease, box-shadow var(--t-fast) ease,
+    background var(--t-fast) ease;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.85) inset,
     0 5px 14px rgba(124, 116, 232, 0.08), 0 3px 10px rgba(56, 189, 248, 0.06);
 }
@@ -446,7 +526,10 @@ body {
   min-height: 1rem;
 }
 
-/* Reveal on scroll */
+/* =========================
+   10) REVEAL & BACK-TO-TOP
+   ========================= */
+
 .reveal {
   opacity: 0;
   transform: translateY(12px);
@@ -457,18 +540,17 @@ body {
   transform: translateY(0);
 }
 
-/* Back to top */
 .backtotop {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  inset-inline-end: 1rem;
+  inset-block-end: 1rem;
   z-index: 50;
   opacity: 0;
   transform: translateY(10px);
   pointer-events: none;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 0.75rem;
+  border-radius: var(--r-md);
   background: #3b82f6;
   color: #fff;
   border: 1.5px solid #fff;
@@ -496,6 +578,8 @@ body {
     opacity: 1;
   }
 }
+
+/* Motion preference */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -511,28 +595,44 @@ body {
   }
 }
 
-/* ===================== GLASS CARDS ===================== */
+/* =========================
+   11) GLASS CARD SYSTEM
+   ========================= */
+
 .glass,
 .glass-soft,
 .glass-clear-xl {
   position: relative;
   overflow: hidden;
-  border-radius: 1rem;
+  border-radius: var(--r-lg);
   isolation: isolate;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  background-clip: padding-box;
 }
+
+/* Backdrop only when supported */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass,
+  .glass-soft,
+  .glass-clear-xl {
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+  }
+}
+
 .glass,
 .glass-soft {
   background: rgba(255, 255, 255, 0.16);
   box-shadow: none;
 }
+
 .glass-clear-xl {
-  /* AVATAR CARD: lebih tembus + lebih terangkat */
+  /* Avatar card: lebih tembus + terangkat */
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 30px 68px var(--shadow-indigo), 0 18px 40px var(--shadow-sky);
 }
+
+/* Top sheen + border gradient */
 .glass::after,
 .glass-soft::after,
 .glass-clear-xl::after {
@@ -573,21 +673,21 @@ body {
 .glass-soft > *,
 .glass-clear-xl > * {
   position: relative;
-  z-index: 1;
+  z-index: var(--z-fg);
 }
 
-/* Hover shadow hanya saat hover (kecuali avatar) */
+/* Hover lift (kecuali avatar) */
 .glass:hover,
 .glass-soft:hover {
   transform: translateY(-2px);
   box-shadow: 0 26px 56px var(--shadow-indigo), 0 16px 36px var(--shadow-sky);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--t-med) ease, box-shadow var(--t-med) ease;
 }
 .glass-clear-xl:hover {
   transform: translateY(-3px);
 }
 
-/* ===== Avatar media responsive ===== */
+/* Avatar media responsive */
 .glass-clear-xl img,
 .glass-clear-xl svg,
 .glass-clear-xl picture,
@@ -599,7 +699,8 @@ body {
   object-fit: cover;
   border-radius: 0.75rem;
 }
-/* paksa full width di mobile untuk container-utility bawaan */
+
+/* Paksa full width avatar media di mobile untuk util bawaan */
 @media (max-width: 640px) {
   .glass-clear-xl .w-48,
   .glass-clear-xl .w-56,
@@ -610,29 +711,32 @@ body {
   }
 }
 
-/* ===== Bg match util: background selalu mengikuti image ===== */
+/* Bg match util */
 .bg-match {
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover; /* isi area sama seperti gambar tampil */
-  /* jika ingin 1:1 tanpa crop, ganti ke: background-size:contain; */
-  border-radius: 1rem;
+  background-size: cover; /* isi area */
+  border-radius: var(--r-lg);
 }
 
-/* ===================== THEME TOGGLE ===================== */
+/* =========================
+   12) THEME TOGGLE
+   ========================= */
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.55rem 0.8rem;
-  border-radius: 0.75rem;
+  border-radius: var(--r-md);
   background: rgba(255, 255, 255, 0.9);
   color: #0f172a;
   border: 1.5px solid #fff;
   box-shadow: 0 8px 18px rgba(var(--indigo), 0.14),
     0 6px 14px rgba(var(--sky), 0.12);
-  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.2s ease;
+  transition: transform var(--t-fast) ease, background var(--t-fast) ease,
+    box-shadow 0.2s ease;
 }
 .theme-toggle:hover {
   transform: translateY(-1px);
@@ -641,6 +745,7 @@ body {
 .theme-toggle .icon-moon {
   display: none;
 }
+
 html[data-theme="dark"] .theme-toggle {
   background: rgba(15, 23, 42, 0.86);
   color: #e5e7eb;
@@ -657,7 +762,10 @@ html[data-theme="dark"] .theme-toggle .icon-moon {
   display: inline;
 }
 
-/* ===================== DARK THEME OVERRIDES ===================== */
+/* =========================
+   13) DARK THEME OVERRIDES
+   ========================= */
+
 html.dark body {
   color-scheme: dark;
   background: radial-gradient(
@@ -715,16 +823,22 @@ html.dark .glass-soft {
   background: rgba(10, 15, 28, 0.48);
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow: none;
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  html.dark .glass,
+  html.dark .glass-soft {
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+  }
 }
 html.dark .glass-clear-xl {
-  background: rgba(10, 15, 28, 0.26); /* TEMBUS */
+  background: rgba(10, 15, 28, 0.26); /* lebih tembus */
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow: 0 28px 72px rgba(var(--indigo), 0.32),
     0 18px 44px rgba(var(--sky), 0.2);
 }
-/* aksen */
+
+/* Aksen glass (dark) */
 html.dark .glass::after,
 html.dark .glass-soft::after,
 html.dark .glass-clear-xl::after {
@@ -745,7 +859,7 @@ html.dark .glass-clear-xl::before {
   );
 }
 
-/* Hover shadow dark (kecuali avatar) */
+/* Hover shadows (dark) */
 html.dark .glass:hover,
 html.dark .glass-soft:hover {
   transform: translateY(-2px);
@@ -756,7 +870,7 @@ html.dark .glass-clear-xl:hover {
   transform: translateY(-3px);
 }
 
-/* Input */
+/* Input dark */
 html.dark .input {
   background: #0b1220;
   color: #e5e7eb;
@@ -768,7 +882,7 @@ html.dark .input::placeholder {
   color: #9ca3af;
 }
 
-/* Buttons */
+/* Buttons dark */
 html.dark .btn-ghost,
 html.dark .btn-chip {
   background: rgba(15, 23, 42, 0.86);
@@ -780,7 +894,7 @@ html.dark .btn-primary {
   border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* Footer & divider */
+/* Footer & divider (dark) */
 html.dark footer {
   background: rgba(15, 23, 42, 0.58);
   border-color: rgba(255, 255, 255, 0.14);
@@ -794,7 +908,7 @@ html.dark .white-divider {
   );
 }
 
-/* === “Tersedia untuk kerja” pill (dark): gelap agar teks putih terbaca === */
+/* “Tersedia untuk kerja” pill (dark) */
 html.dark footer .rounded-md,
 html.dark footer .badge.available,
 html.dark footer .available,
@@ -805,7 +919,7 @@ html.dark footer [data-availability="open"] {
   box-shadow: 0 8px 18px rgba(2, 6, 23, 0.45);
 }
 
-/* Nav link underline kontras */
+/* Nav link underline (dark) */
 html.dark .nav-link::after {
   background: linear-gradient(
     90deg,
@@ -814,7 +928,7 @@ html.dark .nav-link::after {
   );
 }
 
-/* Back to top */
+/* Back to top (dark) */
 html.dark .backtotop {
   background: #1f2937;
   color: #e5e7eb;
@@ -823,12 +937,12 @@ html.dark .backtotop {
     0 8px 20px rgba(var(--sky), 0.2);
 }
 
-/* Title icon */
+/* Title icon (dark) */
 html.dark .title-icon {
   color: #93c5fd;
 }
 
-/* ===== Dark mode: perkuat kontras teks umum ===== */
+/* Perkuat kontras teks umum (dark) */
 html.dark .text-slate-900 {
   color: #f1f5f9 !important;
 }
@@ -843,7 +957,7 @@ html.dark .brand-title {
   color: #e5e7eb;
 }
 
-/* Logo chip (RP) */
+/* Logo chip (dark) */
 html.dark .logo-shape {
   background: rgba(15, 23, 42, 0.92) !important;
   color: #e5e7eb !important;
@@ -851,7 +965,7 @@ html.dark .logo-shape {
   box-shadow: 0 8px 18px rgba(2, 6, 23, 0.45);
 }
 
-/* ===== Avatar SVG placeholder tweak (optional) ===== */
+/* Avatar SVG placeholder tweak (optional) */
 html.dark .glass-clear-xl svg[role="img"][aria-label="Avatar placeholder"] {
   filter: brightness(0.92) contrast(1.02) saturate(0.95);
 }
@@ -873,7 +987,7 @@ html.dark
   opacity: 0.92 !important;
 }
 
-/* Badge/Chip di dark */
+/* Badge/Chip (dark) */
 html.dark .chip,
 html.dark .badge {
   background: rgba(15, 23, 42, 0.88);
@@ -881,7 +995,7 @@ html.dark .badge {
   border-color: rgba(255, 255, 255, 0.14);
 }
 
-/* ===== Dark: perkuat kontras area Keahlian (teks saja) ===== */
+/* Area Keahlian: teks lebih kontras (dark) */
 html.dark #keahlian h3 {
   color: #f1f5f9 !important;
 }
@@ -890,30 +1004,35 @@ html.dark #keahlian .skill-name {
   color: #e5e7eb !important;
 }
 
-/* ===== Light mode: garis card soft & tetap kebaca ===== */
+/* =========================
+   14) LIGHT TWEAKS & SPECIFIC HOOKS
+   ========================= */
+
+/* Light mode: garis card lebih soft & tetap kebaca */
 html:not(.dark) .glass,
 html:not(.dark) .glass-soft {
-  /* garis tipis bernuansa indigo pastel (lembut, tidak kontras tajam) */
-  border-color: rgba(124, 116, 232, 0.14); /* indigo-400 @14% */
-  /* inner highlight halus supaya tepi “angkat” tanpa jadi keras */
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65) inset; /* highlight lembut */
+  border-color: rgba(124, 116, 232, 0.14);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65) inset;
 }
 
-/* Avatar card: tetap tembus & terangkat, garisnya juga soft */
+/* Avatar card (light): tembus & terangkat */
 html:not(.dark) .glass-clear-xl {
   border-color: rgba(124, 116, 232, 0.12);
 }
 
-/* ==== Navbar brand subtitle contrast fix ====
-   Target: paragraf setelah .brand-title (System Analyst)
-   Biar dinamis & selalu terbaca di light/dark */
+/* Kontras teks "System Analyst" (Navbar & Avatar Card) */
 .glass-nav .brand-title + p {
-  color: #0f172a !important; /* light mode: gelap */
+  color: #0f172a !important;
 }
-
 html.dark .glass-nav .brand-title + p,
 html[data-theme="dark"] .glass-nav .brand-title + p {
-  color: #e5e7eb !important; /* dark mode: terang */
+  color: #e5e7eb !important;
 }
 
-/* Catatan: hover shadows sebelumnya tetap berlaku seperti semula */
+#hero .glass-clear-xl h2 + p {
+  color: #0f172a !important;
+}
+html.dark #hero .glass-clear-xl h2 + p,
+html[data-theme="dark"] #hero .glass-clear-xl h2 + p {
+  color: #e5e7eb !important;
+}

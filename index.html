@@ -2,12 +2,28 @@
 <html lang="id">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
 
     <title>Dani Juhaeni — System Analyst Portfolio</title>
     <meta
       name="description"
       content="Portofolio satu halaman Dani Juhaeni, System Analyst yang mengubah kebutuhan bisnis menjadi spesifikasi teknis yang jelas, terukur, dan dapat diuji."
+    />
+
+    <!-- Theme color (light/dark) -->
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#ffffff"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#0b1220"
     />
 
     <!-- Open Graph -->
@@ -24,10 +40,10 @@
     <!-- Favicon (data URI placeholder) -->
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' rx='24' ry='24' fill='%2393c5fd'/%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-size='64' fill='%231e3a8a' font-family='ui-sans-serif,system-ui,-apple-system' %3ED%3C/text%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Crect width='100%25' height='100%25' rx='24' ry='24' fill='%2393c5fd'/%3E%3Ctext x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' font-size='64' fill='%231e3a8a' font-family='ui-sans-serif,system-ui,-apple-system' %3EDJ%3C/text%3E%3C/svg%3E"
     />
 
-    <!-- Font: Manrope -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -35,7 +51,7 @@
       rel="stylesheet"
     />
 
-    <!-- Tailwind (CDN) + extend font -->
+    <!-- Tailwind (config then CDN) -->
     <script>
       window.tailwind = {
         theme: {
@@ -61,7 +77,7 @@
       };
     </script>
 
-    <!-- Theme bootstrap: set "dark" sedini mungkin (anti-FOUC) -->
+    <!-- Bootstrap theme early (anti-FOUC) -->
     <script>
       (function () {
         try {
@@ -78,7 +94,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Styles -->
+    <!-- App Styles -->
     <link rel="stylesheet" href="./index.css" />
   </head>
 
@@ -107,14 +123,14 @@
           >
             <span
               class="logo-shape inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/90 text-slate-900 text-sm font-extrabold ring-1 ring-white/70 tracking-tighter-2"
-              >RP</span
+              aria-hidden="true"
+              >DJ</span
             >
             <span class="sr-only">Ke bagian atas</span>
             <div class="hidden sm:block">
               <p class="brand-title text-slate-900 font-semibold leading-tight">
                 Dani Juhaeni
               </p>
-              <!-- HANYA BARIS INI YANG DIUBAH: kontras tinggi di light & dark -->
               <p class="text-xs text-slate-900 dark:text-white">
                 System Analyst
               </p>
@@ -135,6 +151,7 @@
               id="downloadCv"
               class="btn-cta ml-gap"
               title="Download CV PDF"
+              rel="noopener"
               >Download CV</a
             >
 
@@ -145,6 +162,7 @@
               aria-label="Toggle dark mode"
               aria-pressed="false"
               title="Toggle Dark Mode"
+              type="button"
             >
               <!-- Ikon sun -->
               <svg
@@ -185,6 +203,7 @@
             aria-label="Buka navigasi"
             aria-expanded="false"
             class="btn-burger md:hidden"
+            type="button"
           >
             <svg
               class="w-5 h-5"
@@ -220,6 +239,7 @@
               href="./assets/cv.pdf"
               id="downloadCvMobile"
               class="btn-cta mt-3 w-full inline-flex sm:hidden"
+              rel="noopener"
               >Download CV</a
             >
 
@@ -230,6 +250,7 @@
               aria-label="Toggle dark mode"
               aria-pressed="false"
               title="Toggle Dark Mode"
+              type="button"
             >
               <svg
                 class="icon-sun"
@@ -286,6 +307,7 @@
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     d="M5 12h14M13 5l7 7-7 7"
@@ -301,6 +323,7 @@
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <rect
                     x="4"
@@ -327,22 +350,24 @@
             </div>
           </div>
 
-          <!-- Avatar Card: transparan, tanpa border ring, konten di-center -->
+          <!-- Avatar Card -->
           <div class="glass-clear-xl with-halo p-6 sm:p-7 rounded-2xl reveal">
             <div
               class="flex flex-col sm:flex-row items-center sm:items-center justify-center sm:justify-center gap-6 mx-auto"
             >
-              <!-- Wrapper bg-match -->
               <figure
                 class="bg-match w-full max-w-xs sm:max-w-none sm:w-56 lg:w-64 rounded-3xl overflow-hidden"
                 id="avatarFigure"
               >
-                <!-- Gambar responsif -->
                 <img
                   id="avatarImg"
                   src="./assets/avatar.png"
                   alt="Foto profil Dani Juhaeni"
                   class="block w-full h-auto"
+                  width="512"
+                  height="512"
+                  decoding="async"
+                  fetchpriority="high"
                   onerror="this.replaceWith(document.getElementById('avatarFallback').content.cloneNode(true))"
                 />
               </figure>
@@ -361,14 +386,14 @@
                   <a
                     href="https://linkedin.com/in/rakapratama"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     class="btn-chip"
                     >LinkedIn</a
                   >
                   <a
                     href="https://github.com/rakapratama"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     class="btn-chip"
                     >GitHub</a
                   >
@@ -377,7 +402,7 @@
             </div>
           </div>
 
-          <!-- Fallback SVG template (dipakai jika gambar gagal dimuat) -->
+          <!-- Fallback SVG template -->
           <template id="avatarFallback">
             <svg
               viewBox="0 0 200 200"
@@ -441,6 +466,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               d="M4 7h16M4 12h10M4 17h7"
@@ -456,7 +482,10 @@
             <h3 class="text-lg font-semibold text-slate-900">
               Business Analysis
             </h3>
-            <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-slate-800">
+            <ul
+              class="mt-5 grid sm:grid-cols-2 gap-3 text-slate-800"
+              aria-label="Tingkat kemampuan Business Analysis"
+            >
               <li class="flex items-center justify-between">
                 <span>Requirement Elicitation</span
                 ><span class="badge">Advanced</span>
@@ -480,7 +509,10 @@
 
           <div class="glass-soft p-7 rounded-2xl ring-hover-white reveal">
             <h3 class="text-lg font-semibold text-slate-900">Technical</h3>
-            <ul class="mt-5 grid sm:grid-cols-2 gap-3 text-slate-800">
+            <ul
+              class="mt-5 grid sm:grid-cols-2 gap-3 text-slate-800"
+              aria-label="Tingkat kemampuan Teknis"
+            >
               <li class="flex items-center justify-between">
                 <span>SQL / NoSQL (Read)</span
                 ><span class="badge">Intermediate</span>
@@ -510,6 +542,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <rect x="3" y="4" width="18" height="14" rx="3" stroke-width="2" />
             <path d="M3 9h18" stroke-width="2" />
@@ -612,6 +645,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               d="M6 9l6-6 6 6M6 15l6 6 6-6"
@@ -624,7 +658,7 @@
 
         <ol class="relative border-l border-white/60 pl-7 space-y-9">
           <li class="reveal">
-            <div class="timeline-dot"></div>
+            <div class="timeline-dot" aria-hidden="true"></div>
             <div class="glass p-6 rounded-2xl ring-hover-white">
               <div class="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 class="font-semibold text-slate-900">
@@ -650,7 +684,7 @@
           </li>
 
           <li class="reveal">
-            <div class="timeline-dot"></div>
+            <div class="timeline-dot" aria-hidden="true"></div>
             <div class="glass p-6 rounded-2xl ring-hover-white">
               <div class="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 class="font-semibold text-slate-900">
@@ -681,6 +715,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <circle cx="6" cy="12" r="2" stroke-width="2" />
             <circle cx="12" cy="12" r="2" stroke-width="2" />
@@ -787,6 +822,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               d="M4 7h16M7 4v6M17 10V4"
@@ -824,6 +860,7 @@
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               d="M21 15a4 4 0 0 1-4 4H8l-5 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
@@ -858,7 +895,7 @@
         </div>
       </section>
 
-      <!-- ====================== KONTAK (Formspree + Honeypot + Toast) ====================== -->
+      <!-- ====================== KONTAK ====================== -->
       <section
         id="kontak"
         class="section container mx-auto px-4 md:px-6 lg:px-8"
@@ -910,6 +947,7 @@
                 required
                 aria-required="true"
                 autocomplete="name"
+                inputmode="text"
               />
               <div id="err-nama" class="err" aria-live="polite"></div>
             </div>
@@ -977,6 +1015,7 @@
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     d="M22 2L11 13"
@@ -997,7 +1036,7 @@
                   class="btn-chip"
                   href="https://linkedin.com/in/rakapratama"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   aria-label="Buka LinkedIn"
                 >
                   <svg
@@ -1018,7 +1057,7 @@
                   class="btn-chip"
                   href="https://github.com/rakapratama"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   aria-label="Buka GitHub"
                 >
                   <svg
@@ -1068,6 +1107,7 @@
                   class="w-4 h-4 text-emerald-500"
                   viewBox="0 0 24 24"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <circle cx="12" cy="12" r="10" opacity=".15" />
                   <circle cx="12" cy="12" r="4" />
@@ -1081,12 +1121,18 @@
     </footer>
 
     <!-- Back-to-Top -->
-    <button id="backToTop" aria-label="Kembali ke atas" class="backtotop">
+    <button
+      id="backToTop"
+      aria-label="Kembali ke atas"
+      class="backtotop"
+      type="button"
+    >
       <svg
         class="w-5 h-5"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
+        aria-hidden="true"
       >
         <path d="M12 19V5" stroke-width="2" stroke-linecap="round" />
         <path d="M5 12l7-7 7 7" stroke-width="2" stroke-linecap="round" />
@@ -1094,19 +1140,23 @@
     </button>
 
     <!-- App JS -->
-    <script src="./index.js"></script>
+    <script src="./index.js" defer></script>
 
     <!-- Sinkronisasi bg wrapper dengan gambar avatar -->
     <script>
       (function () {
         var fig = document.getElementById("avatarFigure");
         var img = document.getElementById("avatarImg");
-        if (fig && img && img.complete && img.naturalWidth) {
-          fig.style.backgroundImage = "url('" + img.src + "')";
-        } else if (img) {
-          img.addEventListener("load", function () {
-            if (fig) fig.style.backgroundImage = "url('" + img.src + "')";
-          });
+        if (!fig || !img) return;
+        function applyBg() {
+          if (img && img.naturalWidth) {
+            fig.style.backgroundImage = "url('" + img.src + "')";
+          }
+        }
+        if (img.complete) {
+          applyBg();
+        } else {
+          img.addEventListener("load", applyBg, { once: true });
         }
       })();
     </script>

@@ -1,50 +1,79 @@
-// ============ Mobile Nav Toggle ============
-const btnMenu = document.getElementById("btnMenu");
-const mobileNav = document.getElementById("mobileNav");
+"use strict";
 
-if (btnMenu && mobileNav) {
+/* ======================================================================
+   index.js — Refactor modular & defensif
+   Catatan: Tidak mengubah layout, styling, dan fungsi yang sudah ada.
+   ====================================================================== */
+
+/* ---------- Util DOM ---------- */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const prefersReduced =
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ======================================================================
+   1) Mobile Nav Toggle
+   ====================================================================== */
+(() => {
+  const btnMenu = $("#btnMenu");
+  const mobileNav = $("#mobileNav");
+  if (!btnMenu || !mobileNav) return;
+
+  const setExpanded = (val) => {
+    btnMenu.setAttribute("aria-expanded", String(val));
+    mobileNav.style.maxHeight = val ? `${mobileNav.scrollHeight}px` : "0px";
+  };
+
   btnMenu.addEventListener("click", () => {
     const expanded = btnMenu.getAttribute("aria-expanded") === "true";
-    btnMenu.setAttribute("aria-expanded", String(!expanded));
-    mobileNav.style.maxHeight = expanded
-      ? "0px"
-      : mobileNav.scrollHeight + "px";
+    setExpanded(!expanded);
   });
 
-  mobileNav.querySelectorAll('a[href^="#"]').forEach((a) => {
-    a.addEventListener("click", () => {
-      btnMenu.setAttribute("aria-expanded", "false");
-      mobileNav.style.maxHeight = "0px";
-    });
+  // Close after in-page navigation
+  $$('a[href^="#"]', mobileNav).forEach((a) => {
+    a.addEventListener("click", () => setExpanded(false));
   });
-}
+})();
 
-// ============ Smooth Scroll ============
-const prefersReduced = window.matchMedia(
-  "(prefers-reduced-motion: reduce)"
-).matches;
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener("click", (e) => {
-    const id = anchor.getAttribute("href");
-    if (!id || id === "#") return;
-    const target = document.querySelector(id);
-    if (!target) return;
-    e.preventDefault();
-    target.scrollIntoView({
-      behavior: prefersReduced ? "auto" : "smooth",
-      block: "start",
-    });
-  });
-});
-
-// ============ Footer Year ============
-const yearEl = document.getElementById("year");
-if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-// ============ Navbar scroll state (stabil, anti-godek) ============
+/* ======================================================================
+   2) Smooth Scroll (respect reduced motion)
+   ====================================================================== */
 (() => {
-  const header = document.getElementById("appHeader");
+  $$('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", (e) => {
+      const id = anchor.getAttribute("href");
+      if (!id || id === "#") return;
+      const target = document.querySelector(id);
+      if (!target) return;
+
+      // biarkan ctrl/cmd+click open in new tab default
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      e.preventDefault();
+      target.scrollIntoView({
+        behavior: prefersReduced ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+  });
+})();
+
+/* ======================================================================
+   3) Footer Year
+   ====================================================================== */
+(() => {
+  const yearEl = $("#year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+})();
+
+/* ======================================================================
+   4) Navbar Scroll State (stabil, throttled by rAF)
+   ====================================================================== */
+(() => {
+  const header = $("#appHeader");
   if (!header) return;
+
   const ENTER = 24;
   const EXIT = 6;
   let ticking = false;
@@ -68,17 +97,23 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
       ticking = true;
     }
   };
+
   update();
   window.addEventListener("scroll", onScroll, { passive: true });
 })();
 
-// ============ Reveal on Scroll ============
+/* ======================================================================
+   5) Reveal on Scroll (IntersectionObserver fallback)
+   ====================================================================== */
 (() => {
-  const items = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window) || items.length === 0) {
+  const items = $$(".reveal");
+  if (items.length === 0) return;
+
+  if (!("IntersectionObserver" in window)) {
     items.forEach((el) => el.classList.add("is-visible"));
     return;
   }
+
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -90,65 +125,86 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
     },
     { threshold: 0.12 }
   );
+
   items.forEach((el) => io.observe(el));
 })();
 
-// ============ Back to Top ============
+/* ======================================================================
+   6) Back to Top
+   ====================================================================== */
 (() => {
-  const btn = document.getElementById("backToTop");
+  const btn = $("#backToTop");
   if (!btn) return;
+
   const toggle = () => {
-    if ((window.scrollY || document.documentElement.scrollTop) > 300) {
-      btn.classList.add("show");
-    } else {
-      btn.classList.remove("show");
-    }
+    const y = window.scrollY || document.documentElement.scrollTop;
+    btn.classList.toggle("show", y > 300);
   };
+
   window.addEventListener("scroll", toggle, { passive: true });
   toggle();
+
   btn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReduced ? "auto" : "smooth",
+    });
   });
 })();
 
-// ============ Force Download CV (Blob) ============
-async function forceDownload(url, filename) {
-  try {
-    const res = await fetch(url, { cache: "no-store" });
-    const blob = await res.blob();
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = filename || "CV.pdf";
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      URL.revokeObjectURL(a.href);
-      a.remove();
-    }, 0);
-  } catch (e) {
-    window.open(url, "_blank");
-  }
-}
-const dl1 = document.getElementById("downloadCv");
-if (dl1) {
-  dl1.addEventListener("click", (e) => {
-    e.preventDefault();
-    forceDownload(dl1.getAttribute("href"), "Raka_Pratama_CV.pdf");
-  });
-}
-const dl2 = document.getElementById("downloadCvMobile");
-if (dl2) {
-  dl2.addEventListener("click", (e) => {
-    e.preventDefault();
-    forceDownload(dl2.getAttribute("href"), "Raka_Pratama_CV.pdf");
-  });
-}
+/* ======================================================================
+   7) Force Download CV (Blob dengan cleanup & fallback)
+   ====================================================================== */
+(() => {
+  const forceDownload = async (url, filename = "CV.pdf") => {
+    try {
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const blob = await res.blob();
 
-// ============ Theme Manager (Light/Dark) ============
+      const a = document.createElement("a");
+      const href = URL.createObjectURL(blob);
+      a.href = href;
+      a.download = filename;
+
+      // append to DOM untuk Safari
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      setTimeout(() => {
+        URL.revokeObjectURL(href);
+        a.remove();
+      }, 0);
+    } catch {
+      // Fallback open in new tab jika gagal fetch (CORS/HTTP error)
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const dl1 = $("#downloadCv");
+  const dl2 = $("#downloadCvMobile");
+  if (dl1) {
+    dl1.addEventListener("click", (e) => {
+      e.preventDefault();
+      forceDownload(dl1.getAttribute("href"), "Raka_Pratama_CV.pdf");
+    });
+  }
+  if (dl2) {
+    dl2.addEventListener("click", (e) => {
+      e.preventDefault();
+      forceDownload(dl2.getAttribute("href"), "Raka_Pratama_CV.pdf");
+    });
+  }
+})();
+
+/* ======================================================================
+   8) Theme Manager (Light/Dark) — sync ARIA, simpan preferensi
+   ====================================================================== */
 (() => {
   const html = document.documentElement;
-  const btn = document.getElementById("themeToggle");
-  const btnMobile = document.getElementById("themeToggleMobile");
+  const btn = $("#themeToggle");
+  const btnMobile = $("#themeToggleMobile");
 
   const setPressed = (isDark) => {
     [btn, btnMobile].forEach(
@@ -156,46 +212,52 @@ if (dl2) {
     );
   };
 
+  const currentTheme = () =>
+    html.getAttribute("data-theme") ||
+    (html.classList.contains("dark") ? "dark" : "light");
+
   const applyTheme = (theme) => {
     const isDark = theme === "dark";
     html.classList.toggle("dark", isDark);
     html.setAttribute("data-theme", theme);
     try {
       localStorage.setItem("theme", theme);
-    } catch {}
+    } catch {
+      /* ignore quota/denied */
+    }
     setPressed(isDark);
   };
 
-  const currentTheme = () =>
-    html.getAttribute("data-theme") ||
-    (html.classList.contains("dark") ? "dark" : "light");
-
   const toggle = () => applyTheme(currentTheme() === "dark" ? "light" : "dark");
 
-  // Inisialisasi state tombol sesuai tema aktif (dipasang dari bootstrap <head>)
+  // Inisialisasi state tombol (tema sudah diset sejak <head>)
   setPressed(currentTheme() === "dark");
 
   // Event click
   [btn, btnMobile].forEach((b) => b && b.addEventListener("click", toggle));
 
-  // Ikuti perubahan sistem HANYA bila user belum memilih manual (tidak ada localStorage)
+  // Ikuti sistem hanya jika user belum memilih manual
   let hasUserChoice = false;
   try {
     hasUserChoice = !!localStorage.getItem("theme");
-  } catch {}
+  } catch {
+    hasUserChoice = false;
+  }
 
   const mql =
     window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
   const onChange = (e) => {
     if (!hasUserChoice) applyTheme(e.matches ? "dark" : "light");
   };
-  if (mql && (mql.addEventListener || mql.addListener)) {
+  if (mql) {
     if (mql.addEventListener) mql.addEventListener("change", onChange);
-    else mql.addListener(onChange); // Safari lama
+    else if (mql.addListener) mql.addListener(onChange); // Safari lama
   }
 })();
 
-// ============ Util: Toast Notifikasi ============
+/* ======================================================================
+   9) Toast Notification Utility
+   ====================================================================== */
 function showToast({
   title = "Berhasil",
   message = "",
@@ -206,8 +268,7 @@ function showToast({
   wrap.className = "fixed bottom-4 right-4 z-50 animate-[fadeIn_.2s_ease]";
 
   const base =
-    "min-w-[260px] max-w-[92vw] sm:max-w-sm px-4 py-3 rounded-xl ring-1 shadow-xl flex items-start gap-3 " +
-    "backdrop-blur";
+    "min-w-[260px] max-w-[92vw] sm:max-w-sm px-4 py-3 rounded-xl ring-1 shadow-xl flex items-start gap-3 backdrop-blur";
   const tone =
     type === "success"
       ? "bg-white/95 ring-white/70 text-slate-900 dark:bg-slate-900/90 dark:text-white dark:ring-white/15"
@@ -217,10 +278,10 @@ function showToast({
 
   const icon =
     type === "success"
-      ? `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round"/></svg>`
+      ? `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round"/></svg>`
       : type === "error"
-      ? `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4m0 4h.01M12 3a9 9 0 110 18 9 9 0 010-18z" stroke-width="2" stroke-linecap="round"/></svg>`
-      : `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 16h-1v-4h-1m1-4h.01M12 19a7 7 0 110-14 7 7 0 010 14z" stroke-width="2" stroke-linecap="round"/></svg>`;
+      ? `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 9v4m0 4h.01M12 3a9 9 0 110 18 9 9 0 010-18z" stroke-width="2" stroke-linecap="round"/></svg>`
+      : `<svg class="w-5 h-5 mt-0.5 flex-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M13 16h-1v-4h-1m1-4h.01M12 19a7 7 0 110-14 7 7 0 010 14z" stroke-width="2" stroke-linecap="round"/></svg>`;
 
   wrap.innerHTML = `
     <div class="${base} ${tone}">
@@ -235,19 +296,20 @@ function showToast({
     </div>
   `;
   document.body.appendChild(wrap);
-  const closeBtn = wrap.querySelector("button");
+
+  const closeBtn = $("button", wrap);
   const remove = () => {
     wrap.style.animation = "fadeOut .18s ease forwards";
     setTimeout(() => wrap.remove(), 180);
   };
-  closeBtn.addEventListener("click", remove);
+  closeBtn && closeBtn.addEventListener("click", remove, { passive: true });
   setTimeout(remove, 4200);
 }
 
 // Inject keyframes fadeIn/fadeOut sekali saja
 (() => {
   const id = "toast-anim";
-  if (!document.getElementById(id)) {
+  if (!$("#" + id)) {
     const s = document.createElement("style");
     s.id = id;
     s.textContent =
@@ -257,16 +319,16 @@ function showToast({
   }
 })();
 
-// ============ Contact Form — Formspree only (no mailto) ============
+/* ======================================================================
+   10) Contact Form — Formspree only (honeypot & validasi)
+   ====================================================================== */
 (() => {
-  const FORM_ENDPOINT = "https://formspree.io/f/mjkakjpl"; // <- endpoint kamu
-  const form =
-    document.getElementById("contactForm") ||
-    document.getElementById("kontakForm");
+  const FORM_ENDPOINT = "https://formspree.io/f/mjkakjpl"; // endpoint kamu
+  const form = $("#contactForm") || $("#kontakForm");
   if (!form) return;
 
   const $id = (id) => document.getElementById(id);
-  const btn = document.getElementById("btnKirim");
+  const btn = $("#btnKirim");
   const formMsg = $id("formMsg");
 
   const setBusy = (busy) => {
@@ -275,8 +337,8 @@ function showToast({
     btn.style.opacity = busy ? "0.75" : "1";
     btn.style.pointerEvents = busy ? "none" : "auto";
     btn.innerHTML = busy
-      ? `<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2" opacity=".25"/><path d="M12 3a9 9 0 0 1 9 9" stroke-width="2"/></svg> Mengirim...`
-      : `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 2L11 13" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22l-4-9-9-4 20-7Z" stroke-width="2" stroke-linecap="round"/></svg> Kirim`;
+      ? `<svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke-width="2" opacity=".25"/><path d="M12 3a9 9 0 0 1 9 9" stroke-width="2"/></svg> Mengirim...`
+      : `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M22 2L11 13" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22l-4-9-9-4 20-7Z" stroke-width="2" stroke-linecap="round"/></svg> Kirim`;
   };
 
   form.addEventListener("submit", async (e) => {
@@ -286,6 +348,7 @@ function showToast({
     const emailEl = $id("email");
     const pesanEl = $id("pesan");
     const hpEl = $id("website"); // honeypot
+
     const nama = (namaEl?.value || "").trim();
     const email = (emailEl?.value || "").trim();
     const pesan = (pesanEl?.value || "").trim();
@@ -319,7 +382,8 @@ function showToast({
       $id("err-pesan") && ($id("err-pesan").textContent = "Pesan wajib diisi.");
       valid = false;
     }
-    // Honeypot harus kosong. Jika terisi, pura-pura sukses (supaya bot diam), tapi jangan kirim.
+
+    // Honeypot: jika terisi, pura-pura sukses (tahan bot)
     if (honeypot) {
       showToast({
         title: "Terkirim",
@@ -331,7 +395,7 @@ function showToast({
     }
     if (!valid) return;
 
-    // Kirim ke Formspree
+    // Kirim ke Formspree (pakai FormData agar aman CORS, tanpa preflight)
     try {
       setBusy(true);
       if (formMsg) {
@@ -339,14 +403,26 @@ function showToast({
         formMsg.className = "mt-1 md:col-span-2 text-sm text-slate-600";
       }
 
+      const fd = new FormData();
+      fd.append("nama", nama);
+      fd.append("email", email);
+      fd.append("pesan", pesan);
+      // opsional berguna di Formspree
+      fd.append("_replyto", email);
+      fd.append("_subject", "Kontak dari portfolio");
+
       const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nama, email, pesan }),
+        headers: { Accept: "application/json" }, // JANGAN set Content-Type
+        body: fd,
       });
+
+      let payload = null;
+      try {
+        payload = await res.json();
+      } catch {
+        /* ignore parse error */
+      }
 
       if (res.ok) {
         showToast({
@@ -361,21 +437,17 @@ function showToast({
         }
         form.reset();
       } else {
-        // coba baca pesan error dari Formspree
-        let errText = "Gagal mengirim. Coba lagi sebentar lagi.";
-        try {
-          const data = await res.json();
-          if (data?.errors && data.errors.length) {
-            errText = data.errors.map((e) => e.message).join(", ");
-          }
-        } catch {}
+        const errText =
+          (payload?.errors &&
+            payload.errors.map((e) => e.message).join(", ")) ||
+          `Gagal mengirim. Status ${res.status}.`;
         showToast({ title: "Gagal mengirim", message: errText, type: "error" });
         if (formMsg) {
           formMsg.textContent = errText;
           formMsg.className = "mt-1 md:col-span-2 text-sm text-rose-600";
         }
       }
-    } catch (err) {
+    } catch {
       showToast({
         title: "Jaringan bermasalah",
         message: "Periksa koneksi Anda lalu coba lagi.",
